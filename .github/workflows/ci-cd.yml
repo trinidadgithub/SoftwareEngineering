@@ -20,13 +20,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build backend Docker image
-        run: docker build -t backend ./backend
+        run: docker build -t backend ./fullstack-web-app/backend
 
       - name: Build frontend Docker image
-        run: docker build -t frontend ./frontend
+        run: docker build -t frontend ./fullstack-web-app/frontend
 
       - name: Build database Docker image
-        run: docker build -t database ./database
+        run: docker build -t database ./fullstack-web-app/database
 
       - name: Run tests
         run: docker-compose run backend npm test
