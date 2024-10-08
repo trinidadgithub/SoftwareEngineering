@@ -1,0 +1,29 @@
+name: Database CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - 'fullstack-web-app/database/**'
+  pull_request:
+    paths:
+      - 'fullstack-web-app/database/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up PostgreSQL
+        uses: harmon758/postgresql-action@v1.2
+        with:
+          postgresql version: '13'
+          db_username: ${{ secrets.POSTGRES_USER }}
+          db_password: ${{ secrets.POSTGRES_PASSWORD }}
+          db_name: ${{ secrets.POSTGRES_DB }}
+
+      - name: Run migrations
+        run: |
+          psql -h localhost -U ${{ secrets

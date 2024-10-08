@@ -1,0 +1,27 @@
+name: Backend CI/CD
+
+on:
+  push:
+    paths:
+      - 'fullstack-web-app/backend/**'
+  pull_request:
+    paths:
+      - 'fullstack-web-app/backend/**'
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Run tests
+        run: |
+          cd backend
+          npm run test

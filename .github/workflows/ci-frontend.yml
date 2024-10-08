@@ -1,0 +1,27 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    paths:
+      - 'fullstack-web-app/frontend/**'
+  pull_request:
+    paths:
+      - 'fullstack-web-app/frontend/**'
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run tests
+        run: |
+          cd frontend
+          npm run test
