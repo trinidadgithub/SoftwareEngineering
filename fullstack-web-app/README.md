@@ -51,7 +51,7 @@ fullstack-web-app/
 ```
 2. **Start the Application with Docker Compose** To run all services (frontend, backend, and database) together:
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 3. **Access the Application**
 
