@@ -29,4 +29,4 @@ jobs:
         run: docker build -t database ./fullstack-web-app/database
 
       - name: Run tests
-        run: docker compose run backend npm test
+        run: docker compose -f fullstack-web-app/docker-compose.yml run backend npm test
