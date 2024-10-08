@@ -1,4 +1,4 @@
-# Define the services here
+# Define the services here, ensure ports assigned are allowed
 services:
   frontend:
     build:
