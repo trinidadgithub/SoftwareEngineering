@@ -1,4 +1,4 @@
-# Define the services
+# Define the services here
 services:
   frontend:
     build:
