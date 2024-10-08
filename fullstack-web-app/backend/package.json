@@ -4,7 +4,8 @@
   "description": "Backend for full-stack web app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "jest"
   },
   "dependencies": {
     "express": "^4.17.1",
