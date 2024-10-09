@@ -53,6 +53,7 @@ create_file "terraform/provider.tf"
 create_file "python/certificates/AmazonRootCA1.pem"
 create_file "python/certificates/device-certificate.pem.crt"
 create_file "python/certificates/device-private.pem.crt"
+create_file "python/mqtt_client.py"
 create_file "logs/mqtt_client.log"
 
 # Completion message
