@@ -42,16 +42,21 @@ This repository showcases a series of projects that demonstrate a variety of tec
 - **Description**: Create a client-server application that handles complex network protocols (e.g., WebSocket or gRPC). The project simulates a multiplayer game server with matchmaking capabilities.
 - **Focus**: Networking, efficient data transmission, performance monitoring.
 
+### 9. [IoT Device Integration with AWS IoT Core](./IoT-device-int-with-AWS-IoT-core)
+- **Technologies**: AWS IoT Core, MQTT, AWS IAM, AWS S3, AWS DynamoDB, AWS CloudWatch, Terraform, AWS Certificate Manager
+- **Description**: An IoT solution that integrates AWS IoT Core and MQTT for real-time device communication and data streaming.
+- **Focus**: Real-time networking, efficient data transmission via MQTT, and performance monitoring using AWS CloudWatch, with Terraform for automated infrastructure management.
 ## Focus Areas for Projects
 
 - **Multi-threading**: Development of concurrency-heavy applications that handle parallel tasks.
 - **Distributed Architecture**: Building systems that span across different nodes using microservices and message-passing techniques.
 - **Cloud Deployment**: Deploying applications to cloud environments like AWS or GCP.
 - **Load Balancing**: Ensuring efficient distribution of network traffic across multiple servers.
+- **Internet of Things**: Managing frameworks to support IoT devices with high availability and fault tolerance.
 
 ## Additional Notes
 
 - The projects could range from testing software (all forms), object-oriented design, multi-threading, network, and database applications (CRUD).
 - The programming languages used include Python, JavaScript, C, C++, Go, and TypeScript.
-- The architectures explored include cloud-based applications, on-premises distributed applications, and stand-alone applications.
+- The architectures explored include cloud-based applications, on-premises distributed applications, messaging, and stand-alone applications.
 
