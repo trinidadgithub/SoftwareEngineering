@@ -115,7 +115,7 @@ This command runs the test suite defined in the __tests__/ folder.
 This project integrates CI/CD pipelines using **GitHub Actions**. The pipeline will:
 
 - Run tests
-- Lint the code
+- Lint the code, currently only setup for frontend as an example.
 - Build the Docker images
 - Deploy the application (if set up for deployment)
 
