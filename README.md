@@ -4,7 +4,7 @@ This repository showcases a series of projects that demonstrate a variety of tec
 
 ## Projects Overview
 
-### 1. Full-Stack Web Application
+### 1. [Full-Stack Web Application](./fullstack-web-app)
 - **Technologies**: React, Node.js, PostgreSQL, Docker, GitHub Actions (CI/CD)
 - **Description**: This project is a full-featured web application that showcases both front-end and back-end development skills using React, Node.js, PostgreSQL, and Docker. The application also integrates a CI/CD pipeline using GitHub Actions for streamlined testing and deployment.
 
