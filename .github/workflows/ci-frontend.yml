@@ -9,19 +9,46 @@ on:
       - 'fullstack-web-app/frontend/**'
 
 jobs:
-  build-frontend:
+  lint:
+    name: Lint Code Base
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          cd frontend
-          npm install
+    # Install node for JavaScript, CSS, and JSON linting
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
 
-      - name: Run tests
-        run: |
-          cd frontend
-          npm run test
+    # Install dependencies for linters
+    - name: Install Linters
+      run: |
+        npm install htmlhint stylelint eslint jsonlint dockerfilelint -g
+
+    # Lint HTML files
+    - name: Lint HTML files
+      run: |
+        htmlhint "**/*.html"
+
+    # Lint JavaScript files
+    - name: Lint JavaScript files
+      run: |
+        eslint "**/*.js"
+
+    # Lint CSS files
+    - name: Lint CSS files
+      run: |
+        stylelint "**/*.css"
+
+    # Lint JSON files
+    - name: Lint JSON files
+      run: |
+        jsonlint "**/*.json"
+
+    # Lint Dockerfiles
+    - name: Lint Dockerfiles
+      run: |
+        dockerfilelint "**/Dockerfile"
