@@ -46,6 +46,8 @@ This repository showcases a series of projects that demonstrate a variety of tec
 - **Technologies**: AWS IoT Core, MQTT, AWS IAM, AWS S3, AWS DynamoDB, AWS CloudWatch, Terraform, AWS Certificate Manager
 - **Description**: An IoT solution that integrates AWS IoT Core and MQTT for real-time device communication and data streaming.
 - **Focus**: Real-time networking, efficient data transmission via MQTT, and performance monitoring using AWS CloudWatch, with Terraform for automated infrastructure management.
+
+### 10. [c](./c) (in progress)
 ## Focus Areas for Projects
 
 - **Multi-threading**: Development of concurrency-heavy applications that handle parallel tasks.
