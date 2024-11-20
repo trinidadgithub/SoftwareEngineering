@@ -1,6 +1,6 @@
 ### Binary to Decimal Conversion in C
 
-This project demonstrates three different approaches to converting binary numbers into their decimal equivalents using the C programming language. Each version of the program builds upon the previous one, showcasing techniques such as basic arithmetic, debugging, color-coded output, and bit shifting.
+Introduction:  This project demonstrates three different approaches to converting binary numbers into their decimal equivalents using the C programming language. Each version of the program builds upon the previous one, showcasing techniques such as basic arithmetic, debugging, color-coded output, and bit shifting.
 Project Structure
 
 The project folder contains the following files:

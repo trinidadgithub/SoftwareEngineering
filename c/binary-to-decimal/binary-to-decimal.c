@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-// Function to convert binary to decimal
+// Function to convert binary to decimal using basic features
 int binaryToDecimal(long long binary) {
     int decimal = 0, base = 1, remainder;
     

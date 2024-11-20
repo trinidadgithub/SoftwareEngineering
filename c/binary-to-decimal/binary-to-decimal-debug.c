@@ -8,7 +8,7 @@
 #define BLUE "\033[34m"
 #define CYAN "\033[36m"
 
-// Function to convert binary to decimal
+// Function to convert binary to decimal with color coding and debug statements
 int binaryToDecimal(long long binary) {
     int decimal = 0, base = 1, remainder;
 

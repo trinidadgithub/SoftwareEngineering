@@ -11,7 +11,7 @@
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
 
-// Function to convert binary (as string) to decimal using bit shifting
+// Function to convert binary (as string) to decimal using advanced feature of bit shifting
 int binaryToDecimalBitShift(const char *binary) {
     int decimal = 0;
     int length = strlen(binary);
