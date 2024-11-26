@@ -1,4 +1,4 @@
-This code implements a simple REPL (Read-Eval-Print Loop) for a database-like interactive program. Let's break it down in detail:  
+This code implements a simple REPL (Read-Eval-Print Loop) for a database-like interactive program.  The inspiration comes from here:  https://cstack.github.io/db_tutorial/parts/part1.html.  Let's break it down in detail:  
 
 ---
 #### 1. Header Files
