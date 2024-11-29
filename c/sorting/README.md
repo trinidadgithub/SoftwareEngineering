@@ -2,7 +2,7 @@
 
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/bubble-sort): "Bubble sort has many of the same properties as insertion sort, but has slightly higher overhead. In the case of nearly sorted data, bubble sort takes O(n) time, but requires at least 2 passes through the data (whereas insertion sort requires something more like 1 pass)." as quoted from the source.
 
-[bubble-sort](bubble-sort.c):  The source code  
+[bubble-sort](bubble-sort.c):  The source code.  
 ![Bubble Sort Animation](./animators/bubble_sort.gif)
 
 ```bash
@@ -40,7 +40,7 @@ The explanation above highlights the process and efficiency considerations for i
 
 For these reasons, and because it is also stable, insertion sort is often used as the recursive base case (when the problem size is small) for higher overhead divide-and-conquer sorting algorithms, such as merge sort or quick sort." as quoted from the source.  
 
-[insertion sort](./insertion-sort.c):  The source code.
+[insertion sort](./insertion-sort.c):  The source code.  
 ![Insertion Sort Annimation](./animators/insertion_sort.gif)  
 
 
