@@ -33,10 +33,22 @@ Summary:
 
 The explanation above highlights the process and efficiency considerations for implementing Bubble Sort.
 ```
-
+---
 ### The insertion Sort
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/insertion-sort): 
 "Although it is one of the elementary sorting algorithms with O(n2) worst-case time, insertion sort is the algorithm of choice either when the data is nearly sorted (because it is adaptive) or when the problem size is small (because it has low overhead).
 
-For these reasons, and because it is also stable, insertion sort is often used as the recursive base case (when the problem size is small) for higher overhead divide-and-conquer sorting algorithms, such as merge sort or quick sort." as quoted from the source.
+For these reasons, and because it is also stable, insertion sort is often used as the recursive base case (when the problem size is small) for higher overhead divide-and-conquer sorting algorithms, such as merge sort or quick sort." as quoted from the source.  
 
+[insertion sort](./insertion-sort.c):  The source code.
+![Insertion Sort Annimation](./animators/insertion_sort.gif)  
+
+
+This C program implements the Insertion Sort algorithm:
+
+- insertionSort: This function takes an array and its size, then sorts the array in-place using the insertion sort method. It iterates through the array starting from the second element, comparing it with the elements before it, moving larger elements one position ahead to insert the current element in its correct position.  
+- printArray: A utility function to print the array contents.  
+- main: Demonstrates how to use the insertion sort function by initializing an unsorted array, sorting it, and then printing both the unsorted and sorted arrays to show the effect of the sorting algorithm.  
+
+
+This code follows the logic of insertion sort where you insert each element into its correct position in the sorted portion of the array.
