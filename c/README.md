@@ -2,4 +2,3 @@
 
 [binary-to-decimal](./binary-to-decimal):  A study in bit shifting for converting binary to decimal  
 [db](./db):  A small database built in c, based on the sqllite architecture.
-[sorting](./sorting/): A collection of classic sorting algorithyms.  More will be added as time permits.
