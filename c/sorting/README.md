@@ -2,7 +2,8 @@
 
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/bubble-sort): "Bubble sort has many of the same properties as insertion sort, but has slightly higher overhead. In the case of nearly sorted data, bubble sort takes O(n) time, but requires at least 2 passes through the data (whereas insertion sort requires something more like 1 pass)." as quoted from the source.
 
-[bubble-sort](bubble-sort.c):  The source code.  
+[Bubble Sort](bubble-sort.c):  The source code.  
+
 ![Bubble Sort Animation](./animators/bubble_sort.gif)
 
 Outer Loop:
@@ -39,7 +40,8 @@ The explanation above highlights the process and efficiency considerations for i
 
 For these reasons, and because it is also stable, insertion sort is often used as the recursive base case (when the problem size is small) for higher overhead divide-and-conquer sorting algorithms, such as merge sort or quick sort." as quoted from the source.  
 
-[insertion sort](./insertion-sort.c):  The source code.  
+[Insertion Sort](./insertion-sort.c):  The source code.  
+
 ![Insertion Sort Annimation](./animators/insertion_sort.gif)  
 
 
@@ -51,3 +53,40 @@ This C program implements the Insertion Sort algorithm:
 
 
 This code follows the logic of insertion sort where you insert each element into its correct position in the sorted portion of the array.
+---
+### The selection sort
+[Resource Link](https://www.toptal.com/developers/sorting-algorithms/selection-sort): "From the comparions presented here, one might conclude that selection sort should never be used. It does not adapt to the data in any way (notice that the four animations above run in lock step), so its runtime is always quadratic.  
+
+However, selection sort has the property of minimizing the number of swaps. In applications where the cost of swapping items is high, selection sort very well may be the algorithm of choice."  as quoted from the source. 
+
+[Selection Sort](./selection.c):  The source code.
+
+The results:
+```bash
+Array before sorting:
+11 64 34 25 12 22 25 11 90
+Array after sorting:
+11 11 12 22 25 25 34 64 90
+```
+![Selection Sort Animation](./animators/selection_sort.gif)
+
+This C program implements the Insertion Sort algorithm:
+
+Explanation:
+
+- Loop for i: This loop iterates through each position in the array where we want to place the next smallest element.
+- Inner loop for j: This finds the smallest element in the unsorted part of the array (from i+1 to n-1).
+- Swapping: After finding the smallest element, it's swapped with the element at index i, ensuring that a[0] to a[i] are in sorted order after each iteration.
+
+
+This implementation follows the pseudo code by maintaining the invariants mentioned:
+
+- a[k] is the smallest of a[i..n] at each step of the inner loop.
+- After swapping, a[1..i] (or a[0..i] in C since indices start at 0) are in their final position in the sorted array.
+
+Additional Notes:
+
+- The comments here explain each step of both the sorting algorithm and the main function, providing clarity on what each part of the code does.
+- The loop invariants are described in comments where actions lead to maintaining the sorted state of the array up to the current index i.
+
+
