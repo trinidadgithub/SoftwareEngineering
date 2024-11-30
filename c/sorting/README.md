@@ -5,25 +5,24 @@
 [bubble-sort](bubble-sort.c):  The source code.  
 ![Bubble Sort Animation](./animators/bubble_sort.gif)
 
-```bash
-    Outer Loop:
+Outer Loop:
         This loop iterates through the array, narrowing down the unsorted portion. For each iteration i, the largest i elements will have reached their final sorted positions at the end of the array.
 
-    Inner Loop:
+Inner Loop:
         For each pass, the inner loop compares adjacent elements, arr[j] and arr[j-1], from the end of the unsorted portion towards the beginning.
         If the current element (arr[j]) is smaller than the previous element (arr[j-1]), they are swapped.
 
-    Swapped Flag:
+Swapped Flag:
         A boolean flag swapped is introduced to track whether any swaps occur during the inner loop.
         If no swaps are performed, the array is already sorted, and the algorithm can terminate early by breaking out of the loop.
 
-    Invariant:
+Invariant:
         After each outer loop iteration, the subarray arr[0..i] will be sorted and in its final position.
 
-    Early Termination:
+Early Termination:
         The swapped flag optimizes the algorithm by halting the process if the array becomes sorted before all outer loop iterations are completed.
 
-Summary:
+Conclusion:
 
     Time Complexity:
         Best case (already sorted): O(n) (due to the early termination condition).
@@ -32,7 +31,7 @@ Summary:
     Stable Sort: Maintains the relative order of equal elements.
 
 The explanation above highlights the process and efficiency considerations for implementing Bubble Sort.
-```
+
 ---
 ### The insertion Sort
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/insertion-sort): 
