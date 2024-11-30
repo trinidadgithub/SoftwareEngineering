@@ -24,7 +24,7 @@ Early Termination:
 
 Conclusion:
 
-    Time Complexity:
+Time Complexity:
         Best case (already sorted): O(n) (due to the early termination condition).
         Worst/average case: O(n²).
     Space Complexity: O(1) (in-place sorting).
