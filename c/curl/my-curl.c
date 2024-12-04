@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <curl/curl.h>
 
 // Callback function to write the received data to stdout
@@ -7,13 +8,19 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata) {
     return written;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <URL>\n", argv[0]);
+        return 1;
+    }
+
     CURL *curl;
     CURLcode res;
 
     curl = curl_easy_init();
     if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "http://example.com");
+        // Set the URL based on command-line argument
+        curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
 
         // Perform the request, res will get the return code
