@@ -18,6 +18,7 @@ void insertionSort(int arr[], int n, int h) {
 // Shell Sort function
 void shellSort(int arr[], int n) {
     // Start with a big gap, then reduce the gap
+    int h;
     for (int h = 1; h < n; h = 3 * h + 1);
 
     // Do a h-sort for h values from largest to smallest
@@ -38,7 +39,7 @@ void printArray(int arr[], int size) {
 
 // Driver program to test above functions
 int main() {
-    int arr[] = {12, 34, 54, 2, 3};
+    int arr[] = {12, 34, 54, 12, 2, 3, 54};
     int n = sizeof(arr) / sizeof(arr[0]);
 
     printf("Array before sorting: \n");
