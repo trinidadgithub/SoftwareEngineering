@@ -1,3 +1,13 @@
+### The Shell sort
+[Resource Link](https://www.toptal.com/developers/sorting-algorithms/shell-sort): "The worse-case time complexity of shell sort depends on the increment sequence. For the increments 1 4 13 40 121…, which is what is used here, the time complexity is O(n3/2). For other increments, time complexity is known to be O(n4/3) and even O(n·lg2(n)). Neither tight upper bounds on time complexity nor the best increment sequence are known.
+
+Because shell sort is based on insertion sort, shell sort inherits insertion sort’s adaptive properties. The adapation is not as dramatic because shell sort requires one pass through the data for each increment, but it is significant. For the increment sequence shown above, there are log3(n) increments, so the time complexity for nearly sorted data is O(n·log3(n)).
+
+Because of its low overhead, relatively simple implementation, adaptive properties, and sub-quadratic time complexity, shell sort may be a viable alternative to the O(n·lg(n)) sorting algorithms for some applications when the data to be sorted is not very large."  as quoted from the source
+
+[Shell Sort](./shell.c): The source code.
+
+---
 ### The bubble sort
 
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/bubble-sort): "Bubble sort has many of the same properties as insertion sort, but has slightly higher overhead. In the case of nearly sorted data, bubble sort takes O(n) time, but requires at least 2 passes through the data (whereas insertion sort requires something more like 1 pass)." as quoted from the source.
@@ -88,5 +98,6 @@ Additional Notes:
 
 - The comments here explain each step of both the sorting algorithm and the main function, providing clarity on what each part of the code does.
 - The loop invariants are described in comments where actions lead to maintaining the sorted state of the array up to the current index i.
+
 
 
