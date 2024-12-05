@@ -1,3 +1,26 @@
+### The Three Way Quick Sort
+[Resource Link](https://www.toptal.com/developers/sorting-algorithms/quick-sort-3-way): "The 3-way partition variation of quick sort has slightly higher overhead compared to the standard 2-way partition version. Both have the same best, typical, and worst case time bounds, but this version is highly adaptive in the very common case of sorting with few unique keys.
+
+The 3-way partitioning code shown above is written for clarity rather than optimal performance; it exhibits poor locality, and performs more swaps than necessary. A more efficient but more elaborate 3-way partitioning method is given in Quicksort is Optimal by Robert Sedgewick and Jon Bentley.
+
+When stability is not required, quick sort is the general purpose sorting algorithm of choice. Recently, a novel dual-pivot variant of 3-way partitioning has been discovered that beats the single-pivot 3-way partitioning method both in theory and in practice."
+
+[Three Way Quick Sort](./quick3-sort.c): The source code.
+
+![Three Way Quick Sort Animation](./animators/quick3-sort.gif)
+
+Explanation:
+
+- Pivot Selection: Randomly selects a pivot and swaps it with the last element.
+- Partitioning: Partitions the array into three parts: elements less than the pivot, elements equal to the pivot, and elements greater than the pivot.
+- Pivot Movement: After partitioning, equal elements are moved to the center to maintain stability for equal elements.
+- Recursion: The function sort is called recursively for the parts of the array excluding the pivots.
+
+This implementation follows the 3-way partitioning scheme which is particularly efficient for arrays with many duplicate elements. 
+
+---
+
+
 ### The Shell sort
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/shell-sort): "The worse-case time complexity of shell sort depends on the increment sequence. For the increments 1 4 13 40 121…, which is what is used here, the time complexity is O(n3/2). For other increments, time complexity is known to be O(n4/3) and even O(n·lg2(n)). Neither tight upper bounds on time complexity nor the best increment sequence are known.
 
@@ -6,6 +29,20 @@ Because shell sort is based on insertion sort, shell sort inherits insertion sor
 Because of its low overhead, relatively simple implementation, adaptive properties, and sub-quadratic time complexity, shell sort may be a viable alternative to the O(n·lg(n)) sorting algorithms for some applications when the data to be sorted is not very large."  as quoted from the source
 
 [Shell Sort](./shell.c): The source code.
+
+![Shell Sort Animation](./animators/shell_sort.gif)
+
+Explanation:
+
+Insertion Sort with Gap: The insertionSort function does an insertion sort with a gap h. This is essentially the same as normal insertion sort, but instead of comparing adjacent elements, we compare elements h positions apart.
+
+Shell Sort: 
+- The initial gap h is calculated until h >= n. Here h grows by the formula 3*h + 1 which is a common increment sequence for Shell Sort.
+- Then, h is reduced by dividing by 3 in each iteration, effectively sorting larger and larger sub-arrays until h becomes 1, which then sorts the array completely.
+
+Main Function: Demonstrates the use of the shellSort function with a small array to show before and after sorting results.
+
+
 
 ---
 ### The bubble sort

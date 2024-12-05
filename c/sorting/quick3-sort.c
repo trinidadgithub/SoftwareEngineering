@@ -9,9 +9,9 @@ void swap(int *a, int *b) {
 }
 
 void partition(int a[], int n, int *k, int *p) {
-    *k = 1;
+    *k = 0;
     *p = n;
-    int i = 1;
+    int i = 0;
     
     while (i < *p) {
         if (a[i] < a[n]) {
@@ -30,13 +30,23 @@ void sort(int a[], int low, int high) {
         int pivot_index = low + rand() % (high - low + 1);
         swap(&a[pivot_index], &a[high]);
 
-        int k, p;
-        partition(a, high, &k, &p);
+        int k = low, p = high;
+        int i = low;
+        
+        while (i < p) {
+            if (a[i] < a[high]) {
+                swap(&a[i++], &a[k++]);
+            } else if (a[i] == a[high]) {
+                swap(&a[i], &a[--p]);
+            } else {
+                i++;
+            }
+        }
 
         // Move pivots to center
         int m = (p - k < high - p + 1) ? p - k : high - p + 1;
-        for (int i = 0; i < m; i++) {
-            swap(&a[k + i], &a[high - m + 1 + i]);
+        for (int j = 0; j < m; j++) {
+            swap(&a[k + j], &a[high - m + 1 + j]);
         }
 
         // Recursive sorts
@@ -45,27 +55,24 @@ void sort(int a[], int low, int high) {
     }
 }
 
-int main() {
-    srand(time(NULL)); // seed for random number generation
-    
-    int n;
-    printf("Enter the number of elements: ");
-    scanf("%d", &n);
-
-    int a[n + 1]; // +1 because array indexing starts from 1 in the pseudo-code
-    printf("Enter %d integers:\n", n);
-    for (int i = 1; i <= n; i++) {
-        scanf("%d", &a[i]);
-    }
-
-    // Sort the array
-    sort(a, 1, n);
-
-    printf("Sorted array:\n");
-    for (int i = 1; i <= n; i++) {
-        printf("%d ", a[i]);
-    }
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        printf("%d ", arr[i]);
     printf("\n");
+}
+
+int main() {
+    int arr[] = {12, 34, 54, 12, 2, 3, 54};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Array before sorting: \n");
+    printArray(arr, n);
+
+    srand(time(NULL)); // Seed the random number generator
+    sort(arr, 0, n - 1);  // Now use 0-based indexing
+
+    printf("Array after sorting: \n");
+    printArray(arr, n);
 
     return 0;
 }
