@@ -7,7 +7,7 @@ When stability is not required, quick sort is the general purpose sorting algori
 
 [Three Way Quick Sort](./quick3-sort.c): The source code.
 
-![Three Way Quick Sort Animation](./animators/quick3-sort.gif)
+![Three Way Quick Sort Animation](./animators/quick3.gif)
 
 Explanation:
 
