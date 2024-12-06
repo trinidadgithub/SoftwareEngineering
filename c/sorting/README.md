@@ -1,3 +1,66 @@
+### The Quick Sort
+[Resource Link](https://www.toptal.com/developers/sorting-algorithms/quick-sort):  "When carefully implemented, quick sort is robust and has low overhead. When a stable sort is not needed, quick sort is an excellent general-purpose sort – although the 3-way partitioning version should always be used instead.
+
+The 2-way partitioning code shown above is written for clarity rather than optimal performance; it exhibits poor locality, and, critically, exhibits O(n2) time when there are few unique keys. A more efficient and robust 2-way partitioning method is given in Quicksort is Optimal by Robert Sedgewick and Jon Bentley. The robust partitioning produces balanced recursion when there are many values equal to the pivot, yielding probabilistic guarantees of O(n·lg(n)) time and O(lg(n)) space for all inputs.
+
+With both sub-sorts performed recursively, quick sort requires O(n) extra space for the recursion stack in the worst case when recursion is not balanced. This is exceedingly unlikely to occur, but it can be avoided by sorting the smaller sub-array recursively first; the second sub-array sort is a tail recursive call, which may be done with iteration instead. With this optimization, the algorithm uses O(lg(n)) extra space in the worst case."
+
+**ALGORITHM**
+
+```bash
+_# choose pivot_
+swap a[1,rand(1,n)]
+
+_# 2-way partition_
+k = 1
+for i = 2:n, if a[i] < a[1], swap a[++k,i]
+swap a[1,k]
+_→ invariant: a[1..k-1] < a[k] <= a[k+1..n]_
+
+_# recursive sorts_
+sort a[1..k-1]
+sort a[k+1,n]
+```
+
+[Quick Sort](./quick-sort.c): The source code.
+
+<img src="./animators/quick-sort.gif" alt="Quick Sort Animation" title="Quick Sort Animation">
+
+
+**Explanation:**
+
+Includes and Global Setup
+- stdio.h: For input and output operations like printf.
+- stdlib.h: Provides rand() and srand() for random number generation.
+- time.h: Used to seed the random number generator with time(NULL).
+
+Swap Function
+- A utility function to exchange the values of two integers using pointers.
+
+Partition Function
+- Pivot Selection: Randomly choose a pivot to improve average-case performance and avoid worst-case scenarios for already sorted arrays.
+  
+- Partitioning: 
+  - i keeps track of where elements smaller than the pivot should end up.
+  - The loop moves elements less than the pivot to the left side of i.
+  
+- Final Pivot Placement: The pivot is placed in its correct position, and the function returns this position.
+
+QuickSort Function
+- Base Case: If low is not less than high, there's nothing to sort (segment has 0 or 1 element).
+- Divide and Conquer: 
+  - The array is partitioned, and the pivot's final position is obtained.
+  - The function then recursively sorts the sub-arrays on either side of the pivot.
+
+Print Function
+- Helper function to display the array content for debugging or visualization.
+
+Main Function
+- Initializes an array to be sorted.
+- Calculates the size of the array.
+- Prints the array before and after sorting to show the effect of the quickSort function.
+- ---
+
 ### The Three Way Quick Sort
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/quick-sort-3-way): "The 3-way partition variation of quick sort has slightly higher overhead compared to the standard 2-way partition version. Both have the same best, typical, and worst case time bounds, but this version is highly adaptive in the very common case of sorting with few unique keys.
 

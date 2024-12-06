@@ -89,11 +89,17 @@ int main(int argc, char *argv[]) {
         // Set URL
         curl_easy_setopt(curl, CURLOPT_URL, url);
 
+        // Set User-Agent
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36");
+
         // Pass our file pointer to the callback function
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 
         // Set the write function to our callback
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+
+        // Set option to follow redirections
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
         // Perform the request, res will get the return code
         res = curl_easy_perform(curl);
