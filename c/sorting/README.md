@@ -22,9 +22,10 @@ sort a[1..k-1]
 sort a[k+1,n]
 ```
 
+### Quick Sort Animation ###
 [Quick Sort](./quick-sort.c): The source code.
+![Quick Sort Animation](./animators/quick-sort.gif)
 
-<img src="./animators/quick-sort.gif" alt="Quick Sort Animation" title="Quick Sort Animation">
 
 
 **Explanation:**
