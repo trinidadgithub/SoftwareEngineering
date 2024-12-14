@@ -1,3 +1,111 @@
+### The Heap Sort
+
+[Resource Link](https://www.toptal.com/developers/sorting-algorithms/merge-heap):  "Merge sort is very predictable. It makes between 0.5lg(n) and lg(n) comparisons per element, and between lg(n) and 1.5lg(n) swaps per element. The minima are achieved for already sorted data; the maxima are achieved, on average, for random data. If using Θ(n) extra space is of no concern, then merge sort is an excellent choice: It is simple to implement, and it is the only stable O(n·lg(n)) sorting algorithm. Note that when sorting linked lists, merge sort requires only Θ(lg(n)) extra space (for recursion).Heap sort is simple to implement, performs an O(n·lg(n)) in-place sort, but is not stable.
+
+The first loop, the Θ(n) “heapify” phase, puts the array into heap order. The second loop, the O(n·lg(n)) “sortdown” phase, repeatedly extracts the maximum and restores heap order.
+
+The sink function is written recursively for clarity. Thus, as shown, the code requires Θ(lg(n)) space for the recursive call stack. However, the tail recursion in sink() is easily converted to iteration, which yields the O(1) space bound.
+
+Both phases are slightly adaptive, though not in any particularly useful manner. In the nearly sorted case, the heapify phase destroys the original order. In the reversed case, the heapify phase is as fast as possible since the array starts in heap order, but then the sortdown phase is typical. In the few unique keys case, there is some speedup but not as much as in shell sort or 3-way quicksort.
+
+**ALGORITHM**
+
+```bash
+# heapify
+for i = n/2:1, sink(a,i,n)
+→ invariant: a[1,n] in heap order
+
+# sortdown
+for i = 1:n,
+    swap a[1,n-i+1]
+    sink(a,1,n-i)
+    → invariant: a[n-i+1,n] in final position
+end
+
+# sink from i in a[1..n]
+function sink(a,i,n):
+    # {lc,rc,mc} = {left,right,max} child index
+    lc = 2*i
+    if lc > n, return # no children
+    rc = lc + 1
+    mc = (rc > n) ? lc : (a[lc] > a[rc]) ? lc : rc
+    if a[i] >= a[mc], return # heap ordered
+    swap a[i,mc]
+    sink(a,mc,n)
+ ```
+
+[Heap Sort](./animators/heap-sort.c): The source code
+
+The results:
+
+```bash
+Unsorted array: 
+12 11 13 5 6 7
+Sorted array:
+5 6 7 11 12 13
+```
+
+### The Merge Sort Animation ###
+![Heap Sort Animation](./animators/heap-sort.gif)
+
+**Explanation**
+
+This C code implements the heap sort algorithm:
+
+- sink function is responsible for ensuring the Max-Heap property by moving a node down the heap until it is larger than its children.
+- heapSort is the main function that first builds a Max-Heap from the array and then repeatedly extracts the largest element (root), placing it at the end of the array.
+- The sorting process is visualized by rendering the array after each major operation.
+
+Key points:
+
+- The Max-Heap property ensures the largest element is always at the root.
+- The sorting is done in-place, so no additional arrays are needed.
+- Array indices in C start at 0, so calculations for parent and child nodes use standard formulas like 2 * i + 1 for the left child.
+
+### The Merge Sort
+[Resource Link](https://www.toptal.com/developers/sorting-algorithms/merge-sort):  "Merge sort is very predictable. It makes between 0.5lg(n) and lg(n) comparisons per element, and between lg(n) and 1.5lg(n) swaps per element. The minima are achieved for already sorted data; the maxima are achieved, on average, for random data. If using Θ(n) extra space is of no concern, then merge sort is an excellent choice: It is simple to implement, and it is the only stable O(n·lg(n)) sorting algorithm. Note that when sorting linked lists, merge sort requires only Θ(lg(n)) extra space (for recursion).
+
+Merge sort is the algorithm of choice for a variety of situations: when stability is required, when sorting linked lists, and when random access is much more expensive than sequential access (for example, external sorting on tape).
+
+There do exist linear time in-place merge algorithms for the last step of the algorithm, but they are both expensive and complex. The complexity is justified for applications such as external sorting when Θ(n) extra space is not available."
+
+**ALGORITHM**
+```bash
+# split in half
+m = n / 2
+
+# recursive sorts
+sort a[1..m]
+sort a[m+1..n]
+
+# merge sorted sub-arrays using temp array
+b = copy of a[1..m]
+i = 1, j = m+1, k = 1
+while i <= m and j <= n,
+    a[k++] = (a[j] < b[i]) ? a[j++] : b[i++]
+    → invariant: a[1..k] in final position
+while i <= m,
+    a[k++] = b[i++]
+    → invariant: a[1..k] in final position
+```
+
+[Merge Sort](./merge-sort.c): The source code
+### The Merge Sort Animation ###
+![Merge Sort Animation](./animators/merge-sort.gif)
+
+**Explanation**
+This C code implements the merge sort algorithm:
+
+- merge function is responsible for merging two sorted subarrays of a[].
+- mergeSort is the recursive function that splits the array into two halves, sorts them, and then merges them back.
+- The main function shows how to use mergeSort with an example array.
+
+
+Please note:
+
+- Error handling for memory allocation has been included in the merge function.
+- Array indices in C start at 0, unlike some pseudo-code where they might start at 1. Hence, the adjustment in index calculations.
+
 ### The Quick Sort
 [Resource Link](https://www.toptal.com/developers/sorting-algorithms/quick-sort):  "When carefully implemented, quick sort is robust and has low overhead. When a stable sort is not needed, quick sort is an excellent general-purpose sort – although the 3-way partitioning version should always be used instead.
 
