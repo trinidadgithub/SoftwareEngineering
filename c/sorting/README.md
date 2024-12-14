@@ -34,7 +34,7 @@ function sink(a,i,n):
     sink(a,mc,n)
  ```
 
-[Heap Sort](./animators/heap-sort.c): The source code
+[Heap Sort](./heap-sort.c): The source code
 
 The results:
 
