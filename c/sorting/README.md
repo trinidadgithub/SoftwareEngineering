@@ -277,7 +277,7 @@ This code follows the logic of insertion sort where you insert each element into
 
 However, selection sort has the property of minimizing the number of swaps. In applications where the cost of swapping items is high, selection sort very well may be the algorithm of choice."  as quoted from the source. 
 
-[Selection Sort](./selection.c):  The source code.
+[Selection Sort](./selection-sort.c):  The source code.
 
 The results:
 ```bash
