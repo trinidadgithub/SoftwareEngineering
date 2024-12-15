@@ -45,7 +45,7 @@ Sorted array:
 5 6 7 11 12 13
 ```
 
-### The Merge Sort Animation ###
+### The Heap Sort Animation ###
 ![Heap Sort Animation](./animators/heap-sort.gif)
 
 **Explanation**
