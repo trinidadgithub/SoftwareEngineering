@@ -178,7 +178,7 @@ When stability is not required, quick sort is the general purpose sorting algori
 
 [Three Way Quick Sort](./quick3-sort.c): The source code.
 
-![Three Way Quick Sort Animation](./animators/quick3.gif)
+![Three Way Quick Sort Animation](./animators/three-way-quick-sort.gif)
 
 Explanation:
 
@@ -201,7 +201,7 @@ Because of its low overhead, relatively simple implementation, adaptive properti
 
 [Shell Sort](./shell.c): The source code.
 
-![Shell Sort Animation](./animators/shell_sort.gif)
+![Shell Sort Animation](./animators/shell-sort.gif)
 
 Explanation:
 
@@ -222,7 +222,7 @@ Main Function: Demonstrates the use of the shellSort function with a small array
 
 [Bubble Sort](bubble-sort.c):  The source code.  
 
-![Bubble Sort Animation](./animators/bubble_sort.gif)
+![Bubble Sort Animation](./animators/bubble-sort.gif)
 
 Outer Loop:
         This loop iterates through the array, narrowing down the unsorted portion. For each iteration i, the largest i elements will have reached their final sorted positions at the end of the array.
@@ -260,7 +260,7 @@ For these reasons, and because it is also stable, insertion sort is often used a
 
 [Insertion Sort](./insertion-sort.c):  The source code.  
 
-![Insertion Sort Annimation](./animators/insertion_sort.gif)  
+![Insertion Sort Annimation](./animators/insertion-sort.gif)  
 
 
 This C program implements the Insertion Sort algorithm:
@@ -286,7 +286,7 @@ Array before sorting:
 Array after sorting:
 11 11 12 22 25 25 34 64 90
 ```
-![Selection Sort Animation](./animators/selection_sort.gif)
+![Selection Sort Animation](./animators/selection-sort.gif)
 
 This C program implements the Insertion Sort algorithm:
 
