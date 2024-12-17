@@ -13,3 +13,33 @@ Improvements Overview
 
 ### The source code
 [Sort Code](./sort-util.c):  The sorting utility with graphics rendering.
+
+### How to run
+This program was compile on Ubuntu.  To compile:
+
+```bash
+gcc sort-util.c -o sort-util `sdl2-config --cflags --libs` -lSDL2_image -g -O0
+```
+
+**Usage**
+```bash
+./sort-util
+Usage: ./sort-util gen-gifs [quick-sort|merge-sort|heap-sort|selection-sort|insertion-sort|bubble-sort|shell-sort|three-way-quick-sort]
+```
+**Dependencies**
+You made need to install the following:
+```bash
+sudo apt-get install fastfetch
+sudo apt-get install libsdl2-dev
+sudo apt install ffmpeg
+sudo apt-get install libsdl2-image-dev
+sudo apt install gdb
+sudo apt install valgrind
+sudo apt install imagemagick-6.q16
+```
+
+**Trouble shooting**
+- Use gdb to analyze core dumps and faulty logic
+- Use valgrind to see how bad your wrote your code
+
+
