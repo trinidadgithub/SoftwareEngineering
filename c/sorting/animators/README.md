@@ -26,7 +26,7 @@ gcc sort-util.c -o sort-util `sdl2-config --cflags --libs` -lSDL2_image -g -O0
 ./sort-util
 Usage: ./sort-util gen-gifs [quick-sort|merge-sort|heap-sort|selection-sort|insertion-sort|bubble-sort|shell-sort|three-way-quick-sort]
 ```
-**Dependencies**
+**Dependencies**  
 You made need to install the following:
 ```bash
 sudo apt-get install fastfetch
