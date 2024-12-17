@@ -8,10 +8,17 @@
 #include <stdbool.h>
 
 // Constants for screen dimensions
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-const int ARRAY_SIZE = 50; // Number of bars to show
-const char *OUTPUT_DIR = "./frames/"; // Directory to save frames
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+#define ARRAY_SIZE 50
+#define OUTPUT_DIR "./frames/"
+
+// Macro for error handling
+#define CHECK_ERROR(cond, msg, action) \
+    if (cond) { \
+        fprintf(stderr, "%s\n", msg); \
+        action; \
+    }
 
 // Global array to store frames
 SDL_Texture **frames = NULL;
@@ -36,128 +43,103 @@ void cleanupFrames( int *totalFrameCapacity);
 void displayFrames(SDL_Renderer *renderer);
 void printArray(int arr[], int n);
 void cleanupFiles(const char *outputDir); 
+void initializeSDL(SDL_Window **window, SDL_Renderer **renderer);
+void generateRandomArray(int arr[], int size);
+void dispatchSortAlgorithm(const char *algorithm, int arr[], int size, SDL_Renderer *renderer, int *frame, int *capacity);
+void generateGIF(const char *outputDir, const char *algorithm);
+void cleanupAll(SDL_Window *window, SDL_Renderer *renderer, int *frameCapacity);
+void cleanupFiles(const char *outputDir);
 
 int main(int argc, char *argv[]) {
-    // Debug:  uncomment to analyze
-    // printf("framecount in main is: %d\n", frameCount);
-
-    int totalFrameCapacity = ARRAY_SIZE;
-
-    frames = malloc(ARRAY_SIZE * sizeof(SDL_Texture *));
-    if (!frames) {
-        fprintf(stderr, "Failed to allocate memory for frames array\n");
-        exit(1);
-    }
-
-    for (int i = 0; i < ARRAY_SIZE; i++) {
-        frames[i] = NULL; // Initialize to NULL for safety
-    }
-
-    int frame = 0; //Track the number of frames
-
-    // Check command line argument    
-    if (argc != 3 || strcmp(argv[1], "gen-gifs") != 0 || 
-        ( strcmp(argv[2], "quick-sort") != 0 && \
-          strcmp(argv[2], "merge-sort") != 0 && \
-          strcmp(argv[2], "heap-sort") != 0 &&  \
-          strcmp(argv[2], "selection-sort") != 0 && \
-          strcmp(argv[2], "insertion-sort") != 0 && \
-          strcmp(argv[2], "bubble-sort") != 0 && \
-          strcmp(argv[2], "shell-sort") != 0 && \
-          strcmp(argv[2], "three-way-quick-sort") != 0 )) {
+    // Validate command line arguments
+    if (argc != 3 || strcmp(argv[1], "gen-gifs") != 0) {
         fprintf(stderr, "Usage: %s gen-gifs [quick-sort|merge-sort|heap-sort|selection-sort|insertion-sort|bubble-sort|shell-sort|three-way-quick-sort]\n", argv[0]);
         return 1;
     }
-    
-    // Clean up intermediate files
+
+    // Allocate memory for frames
+    int totalFrameCapacity = ARRAY_SIZE, frame = 0;
+    frames = malloc(ARRAY_SIZE * sizeof(SDL_Texture *));
+    CHECK_ERROR(!frames, "Failed to allocate memory for frames array.", exit(1));
+    for (int i = 0; i < ARRAY_SIZE; i++) frames[i] = NULL;
+
+    // Cleanup PNG files
     cleanupFiles(OUTPUT_DIR);
 
-
+    // Initialize SDL
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
-
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    window = SDL_CreateWindow("Sorting Animation", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (window == NULL) {
-        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (renderer == NULL) {
-        printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
+    initializeSDL(&window, &renderer);
 
     // Generate random array
     int arr[ARRAY_SIZE];
+    generateRandomArray(arr, ARRAY_SIZE);
+
+    // Dispatch the sorting algorithm
+    dispatchSortAlgorithm(argv[2], arr, ARRAY_SIZE, renderer, &frame, &totalFrameCapacity);
+
+    // Generate GIF from PNG frames
+    generateGIF(OUTPUT_DIR, argv[2]);
+
+    // Cleanup resources
+    cleanupAll(window, renderer, &totalFrameCapacity);
+
+    printf("Program completed successfully.\n");
+    return 0;
+}
+
+// ------------------------
+// --- Helper Functions ---
+// ------------------------
+
+// Initialize SDL
+void initializeSDL(SDL_Window **window, SDL_Renderer **renderer) {
+    CHECK_ERROR(SDL_Init(SDL_INIT_VIDEO) < 0, "SDL could not initialize!", exit(1));
+
+    *window = SDL_CreateWindow("Sorting Animation", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    CHECK_ERROR(!(*window), "Window could not be created!", SDL_Quit(); exit(1));
+
+    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    CHECK_ERROR(!(*renderer), "Renderer could not be created!", SDL_DestroyWindow(*window); SDL_Quit(); exit(1));
+}
+
+// Generate random array
+void generateRandomArray(int arr[], int size) {
     srand(time(NULL));
-    for (int i = 0; i < ARRAY_SIZE; i++) {
-        arr[i] = rand() % SCREEN_HEIGHT;
-        // Debug: Uncomment for analysis
-        // printf("Index %d has value %d: ", i, arr[i]);
-    }
+    for (int i = 0; i < size; i++) arr[i] = rand() % SCREEN_HEIGHT;
+}
 
-    // Initialize for Selection Sort
-    int n = sizeof(arr) / sizeof(arr[0]);
+// Dispatch sorting algorithm based on input
+void dispatchSortAlgorithm(const char *algorithm, int arr[], int size, SDL_Renderer *renderer, int *frame, int *capacity) {
+    if (strcmp(algorithm, "quick-sort") == 0) quickSort(arr, 0, size - 1, renderer, frame, capacity);
+    else if (strcmp(algorithm, "merge-sort") == 0) mergeSort(arr, 0, size - 1, renderer, frame, capacity);
+    else if (strcmp(algorithm, "heap-sort") == 0) heapSort(arr, size, renderer, frame, capacity);
+    else if (strcmp(algorithm, "selection-sort") == 0) selectionSort(arr, size, renderer, frame, capacity);
+    else if (strcmp(algorithm, "insertion-sort") == 0) insertionSort(arr, size, renderer, frame, capacity);
+    else if (strcmp(algorithm, "bubble-sort") == 0) bubbleSort(arr, size, renderer, frame, capacity);
+    else if (strcmp(algorithm, "shell-sort") == 0) shellSort(arr, size, renderer, frame, capacity);
+    else if (strcmp(algorithm, "three-way-quick-sort") == 0) threeWayQuickSort(arr, 0, size - 1, renderer, frame, capacity);
+    else fprintf(stderr, "Invalid sorting algorithm: %s\n", algorithm);
+}
 
-    // Perform sorting and capture frames
-    if (strcmp(argv[2], "quick-sort") == 0) {
-        quickSort(arr, 0, ARRAY_SIZE - 1, renderer, &frame, &totalFrameCapacity);
-    } else if (strcmp(argv[2], "merge-sort") == 0) {
-        mergeSort(arr, 0, ARRAY_SIZE - 1, renderer, &frame, &totalFrameCapacity);
-    } else if (strcmp(argv[2], "heap-sort") == 0) {
-        heapSort(arr, ARRAY_SIZE, renderer, &frame, &totalFrameCapacity);
-    } else if (strcmp(argv[2], "selection-sort") == 0) {
-        selectionSort(arr, n, renderer, &frame, &totalFrameCapacity);
-    } else if (strcmp(argv[2], "insertion-sort") == 0) {
-        insertionSort(arr, ARRAY_SIZE, renderer, &frame, &totalFrameCapacity);
-    } else if (strcmp(argv[2], "bubble-sort") == 0) {
-        bubbleSort(arr, ARRAY_SIZE, renderer, &frame, &totalFrameCapacity);
-    } else if (strcmp(argv[2], "shell-sort") == 0) {
-        shellSort(arr, ARRAY_SIZE, renderer, &frame, &totalFrameCapacity);
-    } else if (strcmp(argv[2], "three-way-quick-sort") == 0) {
-        threeWayQuickSort(arr, 0, ARRAY_SIZE -1,  renderer, &frame, &totalFrameCapacity);
-    }
-
-    // Display saved frames on the screen.  Uncomment to debug
-    //
-    // displayFrames(renderer);
-
-    // Generate a list of PNG files for concatenation
+// Generate GIF using ffmpeg
+void generateGIF(const char *outputDir, const char *algorithm) {
     char gifCommand[512];
     snprintf(gifCommand, sizeof(gifCommand),
-          "ffmpeg -y -pattern_type glob -i '%sframe*.png' -filter_complex \"fps=20,scale=740:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" %s.gif",
-          OUTPUT_DIR, argv[2]);
+             "ffmpeg -y -pattern_type glob -i '%sframe*.png' -filter_complex \"fps=20,scale=740:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" %s.gif",
+             outputDir, algorithm);
 
-    if (system(gifCommand) != 0) {
-        fprintf(stderr, "Failed to generate GIF %s.gif\n", argv[2]);
-        return 1;
-    }
+    int result = system(gifCommand);
+    CHECK_ERROR(result != 0, "Failed to generate GIF.", return);
+}
 
-    // up frames array
-    cleanupFrames(&totalFrameCapacity);
-
-    // Clean up
+// Cleanup all resources
+void cleanupAll(SDL_Window *window, SDL_Renderer *renderer, int *frameCapacity) {
+    cleanupFrames(frameCapacity);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
-    // Optional: Clean up intermediate files
-    // char cleanupCommand[512];
-    // snprintf(cleanupCommand, sizeof(cleanupCommand), "rm %sframe*.png", OUTPUT_DIR);
-    // system(cleanupCommand);
-
-    printf("End of program\n");
-
-    return 0;
+    cleanupFiles(OUTPUT_DIR);
 }
 
 // Helper functiont clean up PNG files
@@ -345,9 +327,9 @@ void cleanupFrames( int *totalFrameCapacity) {
 
 }
 
-//-----------------
+//-------------------
 // Sorting algorithms
-//-----------------
+//-------------------
 
 //-----------------
 // Quick Sort
