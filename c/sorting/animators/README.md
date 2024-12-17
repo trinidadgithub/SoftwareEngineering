@@ -40,6 +40,6 @@ sudo apt install imagemagick-6.q16
 
 **Trouble shooting**
 - Use gdb to analyze core dumps and faulty logic
-- Use valgrind to see how bad your wrote your code
+- Use valgrind to see how bad you wrote code
 
 
