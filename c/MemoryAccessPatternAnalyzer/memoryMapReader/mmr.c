@@ -5,6 +5,14 @@
 #define LINE_LENGTH 256
 #define LARGE_ANONYMOUS_THRESHOLD 1024 * 1024  // 1 MB
 
+// ANSI color codes for terminal output
+#define RESET "\033[0m"
+#define GREEN "\033[32m"
+#define BLUE "\033[34m"
+#define YELLOW "\033[33m"
+#define RED "\033[31m"
+
+// Struct to hold memory map information
 typedef struct {
     char start_address[16];
     char end_address[16];
@@ -16,39 +24,47 @@ typedef struct {
     size_t size;  // Size of the memory region in bytes
 } MemoryMap;
 
+// Function to print memory map with color coding
 void print_memory_map(MemoryMap *map, int show_all, int size_in_mb) {
-    if (!show_all && strcmp(map->pathname, "Anonymous") && 
-        strcmp(map->pathname, "[heap]") && 
+    if (!show_all && strcmp(map->pathname, "Anonymous") &&
+        strcmp(map->pathname, "[heap]") &&
         strcmp(map->pathname, "[stack]")) {
         return;
     }
 
-    if (size_in_mb) {
-        double size_mb = map->size / (1024.0 * 1024.0);  // Convert bytes to MB
-        printf("%-15s %-15s %-5s %-8s %-6s %-8s %-10.2f MB %s%s\n",
-               map->start_address,
-               map->end_address,
-               map->permissions,
-               map->offset,
-               map->device,
-               map->inode,
-               size_mb,
-               map->pathname[0] ? map->pathname : "Anonymous",
-               (map->size > LARGE_ANONYMOUS_THRESHOLD && strcmp(map->pathname, "Anonymous") == 0) ? " [LARGE]" : "");
-    } else {
-        printf("%-15s %-15s %-5s %-8s %-6s %-8s %-10lu %s%s\n",
-               map->start_address,
-               map->end_address,
-               map->permissions,
-               map->offset,
-               map->device,
-               map->inode,
-               map->size,
-               map->pathname[0] ? map->pathname : "Anonymous",
-               (map->size > LARGE_ANONYMOUS_THRESHOLD && strcmp(map->pathname, "Anonymous") == 0) ? " [LARGE]" : "");
+    const char *color = RESET;
+
+    // Assign colors based on segment type
+    if (strcmp(map->pathname, "[heap]") == 0) {
+        color = GREEN;
+    } else if (strcmp(map->pathname, "[stack]") == 0) {
+        color = BLUE;
+    } else if (strstr(map->permissions, "x")) {
+        color = YELLOW;
+    } else if (strcmp(map->pathname, "Anonymous") == 0 && map->size > LARGE_ANONYMOUS_THRESHOLD) {
+        color = RED;
     }
+
+    // Convert size to MB if needed
+    double size = size_in_mb ? map->size / (1024.0 * 1024.0) : map->size;
+    const char *size_unit = size_in_mb ? "MB" : "Bytes";
+
+    // Print the memory map with color
+    printf("%s%-15s %-15s %-5s %-8s %-6s %-8s %-10.2f %-5s %s%s\n",
+           color,
+           map->start_address,
+           map->end_address,
+           map->permissions,
+           map->offset,
+           map->device,
+           map->inode,
+           size,
+           size_unit,
+           map->pathname[0] ? map->pathname : "Anonymous",
+           RESET);
 }
 
+// Function to parse a line of /proc/[pid]/maps
 void parse_line(const char *line, MemoryMap *map) {
     unsigned long start, end;
     
@@ -115,3 +131,4 @@ int main(int argc, char *argv[]) {
     fclose(file);
     return 0;
 }
+
