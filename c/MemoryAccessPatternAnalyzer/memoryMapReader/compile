@@ -1,1 +1,6 @@
+git add mmr.c
+git commit -m "fixing table header"
 gcc -o mmr mmr.c -lm
+./mmr 3049 all --size-mb
+./mmr 3049 all --output bash.txt
+head bash.txt
