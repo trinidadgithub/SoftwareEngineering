@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h> // For isatty()
+#include <unistd.h>  // For isatty()
+#include <math.h>    // For fmax()
 
 #define LINE_LENGTH 256
 #define LARGE_ANONYMOUS_THRESHOLD 1024 * 1024  // 1 MB
@@ -25,44 +26,65 @@ typedef struct {
     size_t size;  // Size of the memory region in bytes
 } MemoryMap;
 
-// Function to calculate column widths
+// Function to parse a line from /proc/[pid]/maps
+void parse_line(const char *line, MemoryMap *map) {
+    unsigned long start, end;
+
+    // Parse the line to extract memory map details
+    sscanf(line, "%lx-%lx %4s %8s %5s %9s %255[^\n]",
+           &start, &end,
+           map->permissions,
+           map->offset,
+           map->device,
+           map->inode,
+           map->pathname);
+
+    // Convert addresses to strings
+    snprintf(map->start_address, sizeof(map->start_address), "%lx", start);
+    snprintf(map->end_address, sizeof(map->end_address), "%lx", end);
+
+    // Calculate the size of the region
+    map->size = end - start;
+
+    // Handle cases where pathname is missing
+    if (strlen(map->pathname) == 0) {
+        strcpy(map->pathname, "Anonymous");
+    }
+}
+
+// Function to calculate column widths dynamically
 void calculate_column_widths(FILE *file, int *col_widths) {
     char line[LINE_LENGTH];
     MemoryMap map;
     memset(col_widths, 0, 7 * sizeof(int));
 
     while (fgets(line, sizeof(line), file)) {
-        unsigned long start, end;
-        sscanf(line, "%lx-%lx %4s %8s %5s %9s %255[^\n]",
-               &start, &end, map.permissions, map.offset, map.device, map.inode, map.pathname);
+        parse_line(line, &map);
 
-        char start_address[16], end_address[16];
-        snprintf(start_address, sizeof(start_address), "%lx", start);
-        snprintf(end_address, sizeof(end_address), "%lx", end);
-
-        col_widths[0] = fmax(col_widths[0], strlen(start_address));         // Start Address
-        col_widths[1] = fmax(col_widths[1], strlen(end_address));           // End Address
-        col_widths[2] = fmax(col_widths[2], strlen(map.permissions));       // Permissions
-        col_widths[3] = fmax(col_widths[3], strlen(map.offset));            // Offset
-        col_widths[4] = fmax(col_widths[4], strlen(map.device));            // Device
-        col_widths[5] = fmax(col_widths[5], strlen(map.inode));             // Inode
-        col_widths[6] = fmax(col_widths[6], strlen(map.pathname));          // Pathname
+        col_widths[0] = fmax(col_widths[0], strlen(map.start_address));  // Start Address
+        col_widths[1] = fmax(col_widths[1], strlen(map.end_address));    // End Address
+        col_widths[2] = fmax(col_widths[2], strlen(map.permissions));    // Permissions
+        col_widths[3] = fmax(col_widths[3], strlen(map.offset));         // Offset
+        col_widths[4] = fmax(col_widths[4], strlen(map.device));         // Device
+        col_widths[5] = fmax(col_widths[5], strlen(map.inode));          // Inode
+        col_widths[6] = fmax(col_widths[6], strlen(map.pathname));       // Pathname
     }
 
-    rewind(file); // Reset file pointer
+    rewind(file);  // Reset file pointer
 }
 
-// Function to print table header
+// Function to print the table header
 void print_table_header(FILE *output, int *col_widths, int size_in_mb) {
-    fprintf(output, "%-*s %-*s %-*s %-*s %-*s %-*s %-*s %-*s\n",
+    fprintf(output, "%-*s %-*s %-*s %-*s %-*s %-*s %-12s %-*s\n",
             col_widths[0], "Start Address",
             col_widths[1], "End Address",
             col_widths[2], "Perm",
             col_widths[3], "Offset",
             col_widths[4], "Dev",
             col_widths[5], "Inode",
-            12, size_in_mb ? "Size (MB)" : "Size (Bytes)",
+            size_in_mb ? "Size (MB)" : "Size (Bytes)",
             col_widths[6], "Pathname");
+
     for (int i = 0; i < col_widths[0] + col_widths[1] + col_widths[2] + col_widths[3] + col_widths[4] + col_widths[5] + 12 + col_widths[6] + 8; i++) {
         fputc('-', output);
     }
@@ -75,7 +97,6 @@ void print_memory_map(FILE *output, MemoryMap *map, int *col_widths, int size_in
     const char *reset = "";
 
     if (use_color) {
-        // Assign colors based on segment type
         if (strcmp(map->pathname, "[heap]") == 0) {
             color = GREEN;
         } else if (strcmp(map->pathname, "[stack]") == 0) {
