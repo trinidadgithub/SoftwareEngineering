@@ -53,10 +53,10 @@ void parse_line(const char *line, MemoryMap *map) {
 }
 
 // Function to calculate column widths dynamically
-void calculate_column_widths(FILE *file, int *col_widths) {
+void calculate_column_widths(FILE *file, int *col_widths, int size_in_mb) {
     char line[LINE_LENGTH];
     MemoryMap map;
-    memset(col_widths, 0, 7 * sizeof(int));
+    memset(col_widths, 0, 8 * sizeof(int));  // 8 columns (including Size with Unit)
 
     while (fgets(line, sizeof(line), file)) {
         parse_line(line, &map);
@@ -67,25 +67,32 @@ void calculate_column_widths(FILE *file, int *col_widths) {
         col_widths[3] = fmax(col_widths[3], strlen(map.offset));         // Offset
         col_widths[4] = fmax(col_widths[4], strlen(map.device));         // Device
         col_widths[5] = fmax(col_widths[5], strlen(map.inode));          // Inode
-        col_widths[6] = fmax(col_widths[6], strlen(map.pathname));       // Pathname
+
+        // Calculate the size with unit (Bytes or MB)
+        double size = size_in_mb ? map.size / (1024.0 * 1024.0) : map.size;
+        char size_str[32];
+        snprintf(size_str, sizeof(size_str), "%.2f %s", size, size_in_mb ? "MB" : "Bytes");
+        col_widths[6] = fmax(col_widths[6], strlen(size_str));           // Size Column
+
+        col_widths[7] = fmax(col_widths[7], strlen(map.pathname));       // Pathname
     }
 
     rewind(file);  // Reset file pointer
 }
 
 // Function to print the table header
-void print_table_header(FILE *output, int *col_widths, int size_in_mb) {
-    fprintf(output, "%-*s %-*s %-*s %-*s %-*s %-*s %-12s %-*s\n",
+void print_table_header(FILE *output, int *col_widths) {
+    fprintf(output, "%-*s %-*s %-*s %-*s %-*s %-*s %-*s %-*s\n",
             col_widths[0], "Start Address",
             col_widths[1], "End Address",
             col_widths[2], "Perm",
             col_widths[3], "Offset",
             col_widths[4], "Dev",
             col_widths[5], "Inode",
-            size_in_mb ? "Size (MB)" : "Size (Bytes)",
-            col_widths[6], "Pathname");
+            col_widths[6], "Size",
+            col_widths[7], "Pathname");
 
-    for (int i = 0; i < col_widths[0] + col_widths[1] + col_widths[2] + col_widths[3] + col_widths[4] + col_widths[5] + 12 + col_widths[6] + 8; i++) {
+    for (int i = 0; i < col_widths[0] + col_widths[1] + col_widths[2] + col_widths[3] + col_widths[4] + col_widths[5] + col_widths[6] + col_widths[7] + 8; i++) {
         fputc('-', output);
     }
     fputc('\n', output);
@@ -109,10 +116,12 @@ void print_memory_map(FILE *output, MemoryMap *map, int *col_widths, int size_in
         reset = RESET;
     }
 
+    // Calculate size with unit
     double size = size_in_mb ? map->size / (1024.0 * 1024.0) : map->size;
-    const char *size_unit = size_in_mb ? "MB" : "Bytes";
+    char size_str[32];
+    snprintf(size_str, sizeof(size_str), "%.2f %s", size, size_in_mb ? "MB" : "Bytes");
 
-    fprintf(output, "%s%-*s %-*s %-*s %-*s %-*s %-*s %-12.2f %-*s%s\n",
+    fprintf(output, "%s%-*s %-*s %-*s %-*s %-*s %-*s %-*s %-*s%s\n",
             color,
             col_widths[0], map->start_address,
             col_widths[1], map->end_address,
@@ -120,8 +129,8 @@ void print_memory_map(FILE *output, MemoryMap *map, int *col_widths, int size_in
             col_widths[3], map->offset,
             col_widths[4], map->device,
             col_widths[5], map->inode,
-            size,
-            col_widths[6], map->pathname[0] ? map->pathname : "Anonymous",
+            col_widths[6], size_str,
+            col_widths[7], map->pathname[0] ? map->pathname : "Anonymous",
             reset);
 }
 
@@ -166,10 +175,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int col_widths[7];
-    calculate_column_widths(file, col_widths);
+    int col_widths[8];
+    calculate_column_widths(file, col_widths, size_in_mb);
 
-    print_table_header(output, col_widths, size_in_mb);
+    print_table_header(output, col_widths);
 
     char line[LINE_LENGTH];
     MemoryMap map;
