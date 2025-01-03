@@ -87,16 +87,18 @@ Color: 1
 - Complex Number Library (<complex.h>)
 - Atomic Operations (<stdatomic.h>)
 - Portable Format Specifiers (<inttypes.h>)
+
 ---
 📝 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
 ---
 🤝 Contributing
-
 Contributions are welcome! Feel free to submit a pull request or open an issue for suggestions and improvements.
+
 ---
 📧 Contact
 
-Author: T Marroquin, Jr.
+Author: T Marroquin, Jr.  
 GitHub: github.com/trinidadgithub
