@@ -34,8 +34,8 @@ Steps to Compile and Run
 
 - Clone the repository:
 ```bash
-git clone https://github.com/trinidadgithub/printTypes.git
-cd printTypes
+git clone [https://github.com/trinidadgithub/printTypes.git](https://github.com/trinidadgithub/SoftwareEngineering)
+cd SoftwareEngineering/c/c-types
 ```
 - Compile the program:
 ```bash
