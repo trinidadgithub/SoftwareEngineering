@@ -14,6 +14,7 @@ This program serves as a reference for C developers looking to understand the va
     Includes enumerated types and derived types (structs, unions, arrays)
     Uses portable format specifiers from <inttypes.h> to avoid warnings
 ---
+
 🗂️ Project Structure
 ```bash
 printTypes/
