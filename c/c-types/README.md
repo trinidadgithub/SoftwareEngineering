@@ -13,39 +13,41 @@ This program serves as a reference for C developers looking to understand the va
     Utilizes atomic types from <stdatomic.h>
     Includes enumerated types and derived types (structs, unions, arrays)
     Uses portable format specifiers from <inttypes.h> to avoid warnings
-
+---
 🗂️ Project Structure
-
+```bash
 printTypes/
 │
 ├── printTypes.c    # Main C program
 └── README.md       # Documentation
-
+```
+---
 🚀 How to Run the Program
 Prerequisites
 
 Ensure you have a C compiler installed. For example:
 
-    GCC (GNU Compiler Collection)
-    Clang
+- GCC (GNU Compiler Collection)
+- Clang
 
 Steps to Compile and Run
 
-    Clone the repository:
-
+- Clone the repository:
+```bash
 git clone https://github.com/yourusername/printTypes.git
 cd printTypes
-
-Compile the program:
-
+```
+- Compile the program:
+```bash
 gcc printTypes.c -o printTypes -lm
-
-Run the executable:
-
+```
+- Run the executable:
+```bash
     ./printTypes
-
+```
+---
 📖 Usage Example
-
+```bash
 Primary Data Types:
 int: 42
 char: A
@@ -65,7 +67,8 @@ union Data (int): 100
 
 Enumerated Type:
 Color: 1
-
+```
+---
 📚 Data Types Demonstrated
 | Category |	Types Demonstrated |
 |----------|-----------------------|
@@ -77,20 +80,22 @@ Color: 1
 | *Floating-Point Types* | *float _Complex, double _Complex, long double _Complex* |
 | *Atomic Types* | *_Atomic int* |
 | *Boolean Types* |*bool* |
-
+---
 📦 Dependencies
 
-    C Standard Library (<stdio.h>, <stdbool.h>, <stdint.h>, etc.)
-    Complex Number Library (<complex.h>)
-    Atomic Operations (<stdatomic.h>)
-    Portable Format Specifiers (<inttypes.h>)
-
+- C Standard Library (<stdio.h>, <stdbool.h>, <stdint.h>, etc.)
+- Complex Number Library (<complex.h>)
+- Atomic Operations (<stdatomic.h>)
+- Portable Format Specifiers (<inttypes.h>)
+---
 📝 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+---
 🤝 Contributing
 
 Contributions are welcome! Feel free to submit a pull request or open an issue for suggestions and improvements.
+---
 📧 Contact
 
 Author: T Marroquin, Jr.
