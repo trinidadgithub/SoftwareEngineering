@@ -1,4 +1,4 @@
-📄 ##Print Types in C Program  
+##📄 Print Types in C Program  
 📋 Description
 
 The Print Types program is a comprehensive C application that demonstrates the usage of all major C data types. It covers primary, modified, derived, standard integer, floating-point, complex, atomic, and boolean types, ensuring platform-independent format specifiers.
