@@ -34,7 +34,7 @@ Steps to Compile and Run
 
 - Clone the repository:
 ```bash
-git clone https://github.com/yourusername/printTypes.git
+git clone https://github.com/trinidadgithub/printTypes.git
 cd printTypes
 ```
 - Compile the program:
