@@ -66,15 +66,17 @@ Enumerated Type:
 Color: 1
 
 📚 Data Types Demonstrated
-Category	Types Demonstrated
-Primary Types	int, char, float, double, void, _Bool
-Modified Types	short int, long int, unsigned int
-Derived Types	Arrays, Structures, Unions
-Enumerated Types	enum
-Standard Integer Types	int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t, uint64_t
-Floating-Point Types	float _Complex, double _Complex, long double _Complex
-Atomic Types	_Atomic int
-Boolean Types	bool
+| Category |	Types Demonstrated |
+|----------|-----------------------|
+| *Primary Types* | *int, char, float, double, void, _Bool* |
+| *Modified Types* |*short int, long int, unsigned int* |
+| *Derived Types* |	*Arrays, Structures, Unions* |
+| *Enumerated Types* | *enum* |
+| *Standard Integer Types* | *int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t, uint64_t* |
+| *Floating-Point Types* | *float _Complex, double _Complex, long double _Complex* |
+| *Atomic Types* | *_Atomic int* |
+| *Boolean Types* |*bool* |
+
 📦 Dependencies
 
     C Standard Library (<stdio.h>, <stdbool.h>, <stdint.h>, etc.)
