@@ -95,7 +95,8 @@ Color: 1
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
-🤝 Contributing
+🤝 Contributing  
+
 Contributions are welcome! Feel free to submit a pull request or open an issue for suggestions and improvements.
 
 ---
