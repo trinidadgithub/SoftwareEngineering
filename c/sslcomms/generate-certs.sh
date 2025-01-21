@@ -3,11 +3,59 @@
 # Directory paths
 CA_DIR="ca"
 CERTS_DIR="certs"
+LOGS_DIR="logs"
+
+# Feature flag for overwriting files
+OVERWRITE_ALL=false
+
+# Function to display script usage, options, and requirements
+display_help() {
+    echo "Usage: $0 [OPTIONS]"
+    echo "Script to generate SSL certificates with customizable options."
+    echo
+    echo "Options:"
+    echo "  -o    Overwrite all existing files without prompting."
+    echo "  -h    Display this help message."
+    echo
+    echo "Requirements:"
+    echo "  - OpenSSL: Must be installed on your system. This script uses:"
+    echo "    - openssl genrsa for key generation"
+    echo "    - openssl req for certificate signing requests"
+    echo "    - openssl x509 for signing certificates"
+    echo "  - Bash: Needs to be run in a Bash-compatible environment."
+    echo
+    echo "Description:"
+    echo "  This script generates SSL certificates including a CA, server, and client certificates."
+    echo "  By default, it prompts for permission to overwrite existing files unless -o is specified."
+    echo "  Certificates are placed in 'ca' for CA files and 'certs' for server and client certificates."
+    echo "  Logs are written to the 'logs' directory."
+}
+
+# Function to parse command line options
+parse_options() {
+    while getopts ":oh" opt; do
+        case $opt in
+            o)
+                OVERWRITE_ALL=true
+                ;;
+            h)
+                display_help
+                exit 0
+                ;;
+            \?)
+                echo "Invalid option: -$OPTARG" >&2
+                echo "Use -h for help." >&2
+                exit 1
+                ;;
+        esac
+    done
+}
 
 # Function to log messages
 log() {
     local message="$1"
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $message" >> "${CA_DIR}/generate_certs.log"
+    mkdir -p "$LOGS_DIR"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $message" >> "${LOGS_DIR}/generate_certs.log"
 }
 
 # Function to check if command was successful
@@ -15,23 +63,26 @@ check_success() {
     local command="$1"
     if [ $? -ne 0 ]; then
         log "Error executing: $command"
-        echo "An error occurred while executing: $command. Check ${CA_DIR}/generate_certs.log for details."
+        echo "An error occurred while executing: $command. Check ${LOGS_DIR}/generate_certs.log for details."
         exit 1
     else
         log "Successfully executed: $command"
     fi
 }
 
-# Function to check if a file exists and prompt to overwrite
+# Function to check if a file exists and prompt to overwrite (unless forced overwrite)
 check_file() {
     local file="$1"
     local dir="$2"
-    if [ -f "$dir/$file" ]; then
+    if [ -f "$dir/$file" ] && ! $OVERWRITE_ALL; then
         read -p "The file $dir/$file already exists. Do you want to overwrite it? (y/n): " answer
         case ${answer:0:1} in
             y|Y ) return 0;;
             * ) return 1;;
         esac
+    elif [ -f "$dir/$file" ] && $OVERWRITE_ALL; then
+        log "Overwriting existing file: $dir/$file"
+        return 0
     fi
     return 0
 }
@@ -69,11 +120,13 @@ generate_cert() {
 }
 
 # Main execution
+parse_options "$@"
+
 log "Starting certificate generation process"
 
 # Create directories if they don't exist
-mkdir -p "$CA_DIR" "$CERTS_DIR"
-check_success "mkdir -p $CA_DIR $CERTS_DIR"
+mkdir -p "$CA_DIR" "$CERTS_DIR" "$LOGS_DIR"
+check_success "mkdir -p $CA_DIR $CERTS_DIR $LOGS_DIR"
 
 # Check if OpenSSL is installed
 if ! command -v openssl &> /dev/null; then
@@ -92,4 +145,6 @@ generate_cert "Server" "/C=US/ST=State/L=Locality/O=Organization/CN=localhost" "
 generate_cert "Client" "/C=US/ST=State/L=Locality/O=Organization/CN=Client" "client.key" "client.csr" "client.crt" "$CERTS_DIR"
 
 log "All certificates generated successfully"
-echo "Certificate generation completed. Logs available in ${CA_DIR}/generate_certs.log"
+echo "Certificate generation completed. Logs available in ${LOGS_DIR}/generate_certs.log"
+
+
