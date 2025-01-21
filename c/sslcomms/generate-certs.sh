@@ -16,6 +16,19 @@ check_success() {
     fi
 }
 
+# Function to check if a file exists and prompt to overwrite
+check_file() {
+    local file=$1
+    if [ -f "$file" ]; then
+        read -p "The file $file already exists. Do you want to overwrite it? (y/n): " answer
+        case ${answer:0:1} in
+            y|Y ) return 0;;
+            * ) return 1;;
+        esac
+    fi
+    return 0
+}
+
 # Function to generate certificate
 generate_cert() {
     local type=$1
@@ -23,6 +36,12 @@ generate_cert() {
     local key=$3
     local csr=$4
     local crt=$5
+
+    # Check if each file exists before proceeding
+    if ! check_file "$key" || ! check_file "$csr" || ! check_file "$crt"; then
+        log "Skipping $type certificate generation due to user choice or existing files."
+        return
+    fi
 
     log "Generating $type certificate"
     openssl genrsa -out $key 4096
@@ -61,4 +80,3 @@ generate_cert "Client" "/C=US/ST=State/L=Locality/O=Organization/CN=Client" "cli
 
 log "All certificates generated successfully"
 echo "Certificate generation completed. Logs available in generate_certs.log"
-
