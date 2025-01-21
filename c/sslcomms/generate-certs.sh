@@ -80,3 +80,4 @@ generate_cert "Client" "/C=US/ST=State/L=Locality/O=Organization/CN=Client" "cli
 
 log "All certificates generated successfully"
 echo "Certificate generation completed. Logs available in generate_certs.log"
+
