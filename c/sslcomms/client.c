@@ -13,6 +13,8 @@
 
 #define PORT 8080
 #define SERVER "localhost"
+#define CERT_DIR "./certs/"
+#define CA_DIR "./ca/"
 
 void handleError(const char *msg) {
     perror(msg);
@@ -35,12 +37,26 @@ int main() {
     ctx = SSL_CTX_new(TLS_client_method());
 
     // Load CA certificate for verification
-    if (SSL_CTX_load_verify_locations(ctx, "ca.crt", NULL) <= 0) {
+    char ca_cert_path[256];
+    snprintf(ca_cert_path, sizeof(ca_cert_path), "%sca.crt", CA_DIR);
+    if (SSL_CTX_load_verify_locations(ctx, ca_cert_path, NULL) <= 0) {
         handleError("Failed to load CA certificate");
     }
 
-    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL); // Verify server certificate
+    // Load client certificate and private key
+    char client_cert_path[256], client_key_path[256];
+    snprintf(client_cert_path, sizeof(client_cert_path), "%sclient.crt", CERT_DIR);
+    snprintf(client_key_path, sizeof(client_key_path), "%sclient.key", CA_DIR);
 
+    if (SSL_CTX_use_certificate_file(ctx, client_cert_path, SSL_FILETYPE_PEM) <= 0) {
+        handleError("Failed to load client certificate");
+    }
+    if (SSL_CTX_use_PrivateKey_file(ctx, client_key_path, SSL_FILETYPE_PEM) <= 0) {
+        handleError("Failed to load client private key");
+    }
+
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL); // Verify server certificate
+    
     host = gethostbyname(SERVER);
     if (host == NULL) handleError("gethostbyname");
 

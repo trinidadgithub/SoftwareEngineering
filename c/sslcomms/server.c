@@ -10,6 +10,8 @@
 #include <openssl/err.h>
 
 #define PORT 8080
+#define CERT_DIR "./certs/"
+#define CA_DIR "./ca/"
 
 void handleError(const char *msg) {
     perror(msg);
@@ -32,10 +34,14 @@ int main() {
     ctx = SSL_CTX_new(TLS_server_method());
 
     // Load server certificate and private key
-    if (SSL_CTX_use_certificate_file(ctx, "server.crt", SSL_FILETYPE_PEM) <= 0) {
+    char server_cert_path[256], server_key_path[256];
+    snprintf(server_cert_path, sizeof(server_cert_path), "%sserver.crt", CERT_DIR);
+    snprintf(server_key_path, sizeof(server_key_path), "%sserver.key", CA_DIR);
+
+    if (SSL_CTX_use_certificate_file(ctx, server_cert_path, SSL_FILETYPE_PEM) <= 0) {
         handleError("Failed to load server certificate");
     }
-    if (SSL_CTX_use_PrivateKey_file(ctx, "server.key", SSL_FILETYPE_PEM) <= 0) {
+    if (SSL_CTX_use_PrivateKey_file(ctx, server_key_path, SSL_FILETYPE_PEM) <= 0) {
         handleError("Failed to load server private key");
     }
     
@@ -44,6 +50,15 @@ int main() {
         handleError("Private key does not match the certificate public key");
     }
 
+    // Load CA certificate for client verification if needed
+    char ca_cert_path[256];
+    snprintf(ca_cert_path, sizeof(ca_cert_path), "%sca.crt", CA_DIR);
+    if (SSL_CTX_load_verify_locations(ctx, ca_cert_path, NULL) <= 0) {
+        handleError("Failed to load CA certificate");
+    }
+    
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);  // Verify client certificate
+    
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd < 0) handleError("socket");
 
@@ -68,18 +83,7 @@ int main() {
 
     printf("SSL connection using %s\n", SSL_get_cipher(ssl));
 
-    // Here you can add code to verify the client's certificate if needed
-    // X509 *client_cert = SSL_get_peer_certificate(ssl);
-    // if (client_cert != NULL) {
-    //     // Verify certificate here
-    //     X509_free(client_cert);
-    // }
-
-    len = SSL_read(ssl, buf, sizeof(buf) - 1);
-    if (len > 0) {
-        buf[len] = '\0';
-        printf("Received: %s\n", buf);
-    }
+    // Here you can add code to handle the actual SSL communication
 
     SSL_free(ssl);
     close(client_fd);
@@ -87,3 +91,4 @@ int main() {
     SSL_CTX_free(ctx);
     return 0;
 }
+
