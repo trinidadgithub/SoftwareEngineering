@@ -8,10 +8,12 @@
 #include <netinet/in.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#include <time.h>
 
 #define PORT 8080
 #define CERT_DIR "./certs/"
 #define CA_DIR "./ca/"
+#define BUFFER_SIZE 1024
 
 void handleError(const char *msg) {
     perror(msg);
@@ -19,13 +21,18 @@ void handleError(const char *msg) {
     exit(1);
 }
 
+int add(int a, int b) {
+    return a + b;
+}
+
 int main() {
     SSL_CTX *ctx;
     SSL *ssl;
     int server_fd, client_fd;
     struct sockaddr_in addr;
-    char buf[1024] = {0};
+    char buf[BUFFER_SIZE] = {0};
     int len;
+    time_t start_time = time(NULL);
 
     // Initialize SSL
     SSL_library_init();
@@ -50,7 +57,7 @@ int main() {
         handleError("Private key does not match the certificate public key");
     }
 
-    // Load CA certificate for client verification if needed
+    // Load CA certificate for client verification
     char ca_cert_path[256];
     snprintf(ca_cert_path, sizeof(ca_cert_path), "%sca.crt", CA_DIR);
     if (SSL_CTX_load_verify_locations(ctx, ca_cert_path, NULL) <= 0) {
@@ -83,7 +90,27 @@ int main() {
 
     printf("SSL connection using %s\n", SSL_get_cipher(ssl));
 
-    // Here you can add code to handle the actual SSL communication
+    // Continuous conversation for 30 seconds
+    while (difftime(time(NULL), start_time) < 30) {
+        len = SSL_read(ssl, buf, sizeof(buf) - 1);
+        if (len > 0) {
+            buf[len] = '\0';
+            printf("Client: %s\n", buf);
+
+            // Parse the question and respond
+            int a, b;
+            if (sscanf(buf, "What is %d plus %d?", &a, &b) == 2) {
+                int result = add(a, b);
+                char response[BUFFER_SIZE];
+                snprintf(response, sizeof(response), "The result is: %d\n", result);
+                SSL_write(ssl, response, strlen(response));
+            } else {
+                SSL_write(ssl, "I didn't understand that. Please ask about addition.\n", 52);
+            }
+        } else if (len <= 0) {
+            handleError("SSL read");
+        }
+    }
 
     SSL_free(ssl);
     close(client_fd);

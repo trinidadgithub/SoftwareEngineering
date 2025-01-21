@@ -10,11 +10,13 @@
 #include <arpa/inet.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#include <time.h>
 
 #define PORT 8080
 #define SERVER "localhost"
 #define CERT_DIR "./certs/"
 #define CA_DIR "./ca/"
+#define BUFFER_SIZE 1024
 
 void handleError(const char *msg) {
     perror(msg);
@@ -28,7 +30,8 @@ int main() {
     struct hostent *host;
     SSL_CTX *ctx;
     SSL *ssl;
-    const char *message = "Hello, SSL!";
+    char buf[BUFFER_SIZE] = {0};
+    time_t start_time = time(NULL);
 
     // Initialize SSL
     SSL_library_init();
@@ -79,8 +82,29 @@ int main() {
 
     printf("SSL connection using %s\n", SSL_get_cipher(ssl));
 
-    if (SSL_write(ssl, message, strlen(message)) <= 0) {
-        handleError("SSL write");
+    srand(time(NULL)); // Seed for random numbers
+
+    // Continuous conversation for 30 seconds
+    while (difftime(time(NULL), start_time) < 30) {
+        int a = rand() % 10; // Random number between 0 and 9
+        int b = rand() % 10; // Random number between 0 and 9
+        char question[BUFFER_SIZE];
+        snprintf(question, sizeof(question), "What is %d plus %d?\n", a, b);
+        
+        if (SSL_write(ssl, question, strlen(question)) <= 0) {
+            handleError("SSL write");
+        }
+
+        len = SSL_read(ssl, buf, sizeof(buf) - 1);
+        if (len > 0) {
+            buf[len] = '\0';
+            printf("Server: %s", buf);
+        } else if (len < 0) {
+            handleError("SSL read");
+        }
+
+        // Small delay to simulate human-like interaction
+        usleep(500000); // 0.5 seconds
     }
 
     SSL_free(ssl);
