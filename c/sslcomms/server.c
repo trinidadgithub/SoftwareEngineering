@@ -9,16 +9,25 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <time.h>
+#include <signal.h>
 
 #define PORT 8080
 #define CERT_DIR "./certs/"
 #define CA_DIR "./ca/"
 #define BUFFER_SIZE 1024
 
+// Global flag to handle termination signals
+volatile sig_atomic_t running = 1;
+
 void handleError(const char *msg) {
     perror(msg);
     ERR_print_errors_fp(stderr);
     exit(1);
+}
+
+// Signal handler for graceful shutdown
+void sig_handler(int signum) {
+    running = 0;
 }
 
 int add(int a, int b) {
@@ -32,7 +41,9 @@ int main() {
     struct sockaddr_in addr;
     char buf[BUFFER_SIZE] = {0};
     int len;
-    time_t start_time = time(NULL);
+
+    // Register signal handler
+    signal(SIGINT, sig_handler);
 
     // Initialize SSL
     SSL_library_init();
@@ -79,44 +90,61 @@ int main() {
 
     printf("Server listening on port %d\n", PORT);
 
-    if ((client_fd = accept(server_fd, NULL, NULL)) < 0) handleError("accept");
-
-    ssl = SSL_new(ctx);
-    SSL_set_fd(ssl, client_fd);
-
-    if (SSL_accept(ssl) <= 0) {
-        handleError("SSL accept");
-    }
-
-    printf("SSL connection using %s\n", SSL_get_cipher(ssl));
-
-    // Continuous conversation for 30 seconds
-    while (difftime(time(NULL), start_time) < 30) {
-        len = SSL_read(ssl, buf, sizeof(buf) - 1);
-        if (len > 0) {
-            buf[len] = '\0';
-            printf("Client: %s\n", buf);
-
-            // Parse the question and respond
-            int a, b;
-            if (sscanf(buf, "What is %d plus %d?", &a, &b) == 2) {
-                int result = add(a, b);
-                char response[BUFFER_SIZE];
-                snprintf(response, sizeof(response), "The result is: %d\n", result);
-                SSL_write(ssl, response, strlen(response));
-            } else {
-                SSL_write(ssl, "I didn't understand that. Please ask about addition.\n", 52);
+    while (running) {
+        if ((client_fd = accept(server_fd, NULL, NULL)) < 0) {
+            if (errno == EINTR) {  // Handle interruption
+                continue;
             }
-        } else if (len <= 0) {
-            handleError("SSL read");
+            handleError("accept");
         }
+
+        ssl = SSL_new(ctx);
+        SSL_set_fd(ssl, client_fd);
+
+        if (SSL_accept(ssl) <= 0) {
+            handleError("SSL accept");
+        }
+
+        printf("SSL connection using %s\n", SSL_get_cipher(ssl));
+
+        // Continuous conversation until 'exit' is received or signal interrupts
+        while (running) {
+            len = SSL_read(ssl, buf, sizeof(buf) - 1);
+            if (len > 0) {
+                buf[len] = '\0';
+                printf("Client: %s\n", buf);
+
+                if (strcmp(buf, "exit\n") == 0 || strcmp(buf, "exit") == 0) {
+                    break;
+                }
+
+                // Parse the question and respond
+                int a, b;
+                if (sscanf(buf, "What is %d plus %d?", &a, &b) == 2) {
+                    int result = add(a, b);
+                    char response[BUFFER_SIZE];
+                    snprintf(response, sizeof(response), "The result is: %d\n", result);
+                    SSL_write(ssl, response, strlen(response));
+                } else {
+                    SSL_write(ssl, "I didn't understand that. Please ask about addition.\n", 52);
+                }
+            } else if (len == 0) {  // Client closed connection
+                printf("Client disconnected\n");
+                break;
+            } else if (len < 0) {
+                if (errno == EINTR) {  // Handle interruption
+                    continue;
+                }
+                handleError("SSL read");
+            }
+        }
+
+        SSL_free(ssl);
+        close(client_fd);
     }
 
-    SSL_free(ssl);
-    close(client_fd);
+    printf("Server shutting down\n");
     close(server_fd);
     SSL_CTX_free(ctx);
     return 0;
 }
-
-
