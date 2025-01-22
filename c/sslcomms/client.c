@@ -83,7 +83,7 @@ int main() {
 
     srand(time(NULL)); // Seed for random numbers
 
-    // Continuous conversation until 'exit' is sent by user
+    // Continuous conversation without user interaction
     while (1) {
         int a = rand() % 10; // Random number between 0 and 9
         int b = rand() % 10; // Random number between 0 and 9
@@ -102,13 +102,8 @@ int main() {
             handleError("SSL read");
         }
 
-        char user_input[BUFFER_SIZE];
-        printf("Enter 'exit' to stop or press Enter to continue: ");
-        fgets(user_input, BUFFER_SIZE, stdin);
-        if (strcmp(user_input, "exit\n") == 0 || strcmp(user_input, "exit") == 0) {
-            SSL_write(ssl, "exit\n", 5);
-            break;
-        }
+        // Small delay to simulate human-like interaction
+        usleep(500000); // 0.5 seconds pause between questions
     }
 
     SSL_free(ssl);
