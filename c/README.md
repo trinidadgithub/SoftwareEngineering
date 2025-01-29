@@ -12,7 +12,7 @@
 
 ---
 
-Here are additional ideas to work on.
+Here are additional ideas to work on (specific only to REPL study).
 
 1. Understanding String Manipulation
 
@@ -77,6 +77,55 @@ Here are additional ideas to work on.
 11. Testing
 
     Exercise: Write a script or set of commands to automatically test all your shell's functionalities, including edge cases like commands not in PATH, built-ins, and commands with arguments.
-    Goal: Learn the importance of automated testing and how to ensure robustness.  
+    Goal: Learn the importance of automated testing and how to ensure robustness.
+
+12. Argument Handling
+
+    Exercise: Modify your shell to handle multiple arguments with echo. Instead of just printing the first argument, print all arguments separated by spaces.
+
+
+13. Error Reporting for External Commands
+
+    Exercise: Implement error reporting for when an external command cannot be executed (e.g., command not found, permission denied). Show a custom error message based on the type of error (ENOENT, EACCES, etc.).
+
+
+14. Environment Variable Passing
+
+    Exercise: Add functionality to pass environment variables to external programs using execve instead of execvp. Create a simple scenario where an environment variable affects the behavior of an external program (like a script that reads an env variable).
+
+
+15. Background Processes
+
+    Exercise: Implement background execution of commands. If a command ends with an ampersand (&), fork and execute it but don't wait for it to finish. Print the process ID of the background job.
+
+
+16. Command Line Editing
+
+    Exercise: Introduce basic command line editing. Allow users to edit their command line input before executing it (like backspace to delete characters). You might need to implement a readline-like function or use an existing library.
+
+
+17. Redirection
+
+    Exercise: Add support for basic file output redirection (>). When a command is followed by > filename, redirect the command's output to the specified file instead of stdout.
+
+
+18. Handling Signals
+
+    Exercise: Handle signals sent to child processes. For instance, allow users to interrupt a running command with Ctrl+C, and clean up the child process properly.
+
+
+19. Path Expansion
+
+    Exercise: Implement tilde (~) expansion for home directories in commands. When a command starts with ~, replace it with the user's home directory before searching for or executing the command.
+
+
+20. Command History
+
+    Exercise: Implement a basic command history. Allow users to recall previous commands with arrow keys or special commands like history, !! for last command, !n for command number n.
+
+
+21. Testing External Command Execution
+
+    Exercise: Write a set of test scripts or commands to verify the shell handles external commands correctly, including edge cases like very long commands, commands with many arguments, or non-existent commands.
 
 
