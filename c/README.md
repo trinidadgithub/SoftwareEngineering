@@ -7,6 +7,6 @@
 [c-types](./c-types): A study on the various built in types available in C.  
 [MemoryAccessPatternAnalyzer](./MemoryAccessPatternAnalyzer): A study on virtual memory analysis on local.  
 [curl](./curl): An excercise on building your own curl program.  
-[db](./db):  Build your own database. 
+[db](./db):  Build your own database.   
 [sslcomms](./sslcomms): 
 
