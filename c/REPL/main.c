@@ -143,56 +143,63 @@ int main() {
 void handle_quotes(char *input, char *args[], int *argc) {
     char token[PATH_MAX_LENGTH];
     int i = 0;
-    int in_quotes = 0;
+    int in_single_quotes = 0;
+    int in_double_quotes = 0;
     int token_start = 0;
     int concat_quotes = 0;
 
     for (int j = 0; input[j] != '\0'; j++) {
-        if (input[j] == '\'' && !in_quotes) {
-            in_quotes = 1;
-            token_start = j + 1;  // Start of token is next character
-            concat_quotes = 0; // Reset this flag for each new quote
-        } else if (input[j] == '\'' && in_quotes) {
-            in_quotes = 0;
-            // Copy everything between quotes into token
-            strncpy(token + i, input + token_start, j - token_start);
-            i += j - token_start;  // Extend the token length
-
-            // If the next character is another quote, we continue the token
-            if (input[j + 1] == '\'') {
-                j++;  // Skip this quote
-                token_start = j + 1;  // New start for the next part of token
-                in_quotes = 1;  // We are back in quotes
-                concat_quotes = 1; // Flag that we're concatenating quotes
-            } else if (!concat_quotes) {
-                // If we're not concatenating, finalize this token
+        if (input[j] == '\'' && !in_double_quotes) {
+            in_single_quotes = !in_single_quotes;
+            if (!in_single_quotes) {
+                // End of single quote token
                 token[i] = '\0';
                 args[(*argc)++] = strdup(token);
-                i = 0; // Reset token for next argument
+                i = 0;
+                concat_quotes = 0;  // Reset concatenation flag
+            } else {
+                token_start = j + 1;
             }
-        } else if (input[j] == ' ' && !in_quotes) {
-            if (i > 0) {  // Check if we have collected any characters for a token
+        } else if (input[j] == '"' && !in_single_quotes) {
+            in_double_quotes = !in_double_quotes;
+            if (!in_double_quotes) {
+                // End of double quote token
+                token[i] = '\0';
+                if (!concat_quotes) {
+                    args[(*argc)++] = strdup(token);
+                }
+                i = 0;
+                concat_quotes = 0;  // Reset concatenation flag
+            } else {
+                token_start = j + 1;
+            }
+        } else if (input[j] == ' ' && !in_single_quotes && !in_double_quotes) {
+            if (i > 0) {
                 token[i] = '\0';
                 args[(*argc)++] = strdup(token);
                 i = 0;
             }
-            // Reset token and start position
-            token_start = j + 1;
         } else {
-            // Add this block here to handle characters outside of quotes:
-            if (!in_quotes) {
+            if (in_double_quotes && input[j] == '\\' && (input[j+1] == '\\' || input[j+1] == '"' || input[j+1] == '$' || input[j+1] == '\n')) {
+                // Handle escape sequences in double quotes
+                j++; // Skip the next character
+                token[i++] = input[j]; // Add the escaped character
+            } else {
+                if (!in_single_quotes && !in_double_quotes && i == 0) {
+                    token_start = j;
+                }
                 token[i++] = input[j];
+            }
+
+            // Handle concatenated quotes
+            if ((in_single_quotes || in_double_quotes) && input[j + 1] == input[j] && !concat_quotes) {
+                concat_quotes = 1; // Set flag to concatenate
             }
         }
     }
 
     // Handle the last token if any
-    if (i > 0 || in_quotes) {
-        if (in_quotes) {
-            // If we're still in quotes, copy from token_start to the end
-            strncpy(token + i, input + token_start, strlen(input) - token_start);
-            i += strlen(input) - token_start;
-        }
+    if (i > 0 || in_single_quotes || in_double_quotes) {
         token[i] = '\0';
         args[(*argc)++] = strdup(token);
     }
