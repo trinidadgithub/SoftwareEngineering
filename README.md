@@ -55,6 +55,7 @@ This repository showcases a series of projects that demonstrate a variety of tec
 - **Cloud Deployment**: Deploying applications to cloud environments like AWS or GCP.
 - **Load Balancing**: Ensuring efficient distribution of network traffic across multiple servers.
 - **Internet of Things**: Managing frameworks to support IoT devices with high availability and fault tolerance.
+- **Memory Mapping and Visualization**:  Case studies on process memory, virtual and real.
 
 ## Additional Notes
 

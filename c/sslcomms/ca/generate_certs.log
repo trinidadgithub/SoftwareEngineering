@@ -1,0 +1,36 @@
+[2025-01-20 21:55:05] Starting certificate generation process
+[2025-01-20 21:55:05] Successfully executed: mkdir -p ca certs
+[2025-01-20 21:55:05] Generating CA certificate
+[2025-01-20 21:55:05] Successfully executed: openssl genrsa -out ca/ca.key 4096
+[2025-01-20 21:55:05] Successfully executed: openssl req -new -key ca/ca.key -out ca/ca.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 21:55:05] Successfully executed: openssl req -x509 -new -key ca/ca.key -out ca/ca.crt -days 365 -nodes -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 21:55:05] Generating Server certificate
+[2025-01-20 21:55:05] Successfully executed: openssl genrsa -out ca/server.key 4096
+[2025-01-20 21:55:05] Successfully executed: openssl req -new -key ca/server.key -out ca/server.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=localhost"
+[2025-01-20 21:55:05] Successfully executed: openssl x509 -req -in ca/server.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/server.crt -days 365
+[2025-01-20 21:55:05] Generating Client certificate
+[2025-01-20 21:55:05] Successfully executed: openssl genrsa -out ca/client.key 4096
+[2025-01-20 21:55:05] Successfully executed: openssl req -new -key ca/client.key -out ca/client.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Client"
+[2025-01-20 21:55:05] Successfully executed: openssl x509 -req -in ca/client.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/client.crt -days 365
+[2025-01-20 21:55:05] All certificates generated successfully
+[2025-01-20 22:09:48] Starting certificate generation process
+[2025-01-20 22:09:48] Successfully executed: mkdir -p ca certs
+[2025-01-20 22:09:48] Generating CA certificate
+[2025-01-20 22:09:48] Successfully executed: openssl genrsa -out ca/ca.key 4096
+[2025-01-20 22:09:48] Successfully executed: openssl req -new -key ca/ca.key -out ca/ca.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:09:48] Successfully executed: openssl req -x509 -new -key ca/ca.key -out ca/ca.crt -days 365 -nodes -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:09:48] Generating Server certificate
+[2025-01-20 22:09:51] Successfully executed: openssl genrsa -out ca/server.key 4096
+[2025-01-20 22:09:51] Successfully executed: openssl req -new -key ca/server.key -out ca/server.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=localhost"
+[2025-01-20 22:09:51] Successfully executed: openssl x509 -req -in ca/server.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/server.crt -days 365
+[2025-01-20 22:09:51] Generating Client certificate
+[2025-01-20 22:09:52] Successfully executed: openssl genrsa -out ca/client.key 4096
+[2025-01-20 22:09:52] Successfully executed: openssl req -new -key ca/client.key -out ca/client.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Client"
+[2025-01-20 22:09:52] Successfully executed: openssl x509 -req -in ca/client.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/client.crt -days 365
+[2025-01-20 22:09:52] All certificates generated successfully
+[2025-01-20 22:10:28] Starting certificate generation process
+[2025-01-20 22:10:28] Successfully executed: mkdir -p ca certs
+[2025-01-20 22:10:31] Skipping CA certificate generation due to user choice or existing files.
+[2025-01-20 22:10:36] Skipping Server certificate generation due to user choice or existing files.
+[2025-01-20 22:10:38] Skipping Client certificate generation due to user choice or existing files.
+[2025-01-20 22:10:38] All certificates generated successfully

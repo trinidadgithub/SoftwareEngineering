@@ -1,0 +1,127 @@
+[2025-01-20 22:14:50] Starting certificate generation process
+[2025-01-20 22:14:50] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:14:56] Generating CA certificate
+[2025-01-20 22:14:56] Successfully executed: openssl genrsa -out ca/ca.key 4096
+[2025-01-20 22:14:56] Successfully executed: openssl req -new -key ca/ca.key -out ca/ca.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:14:56] Successfully executed: openssl req -x509 -new -key ca/ca.key -out ca/ca.crt -days 365 -nodes -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:15:01] Generating Server certificate
+[2025-01-20 22:15:02] Successfully executed: openssl genrsa -out ca/server.key 4096
+[2025-01-20 22:15:02] Successfully executed: openssl req -new -key ca/server.key -out ca/server.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=localhost"
+[2025-01-20 22:15:02] Successfully executed: openssl x509 -req -in ca/server.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/server.crt -days 365
+[2025-01-20 22:15:06] Generating Client certificate
+[2025-01-20 22:15:09] Successfully executed: openssl genrsa -out ca/client.key 4096
+[2025-01-20 22:15:09] Successfully executed: openssl req -new -key ca/client.key -out ca/client.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Client"
+[2025-01-20 22:15:09] Successfully executed: openssl x509 -req -in ca/client.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/client.crt -days 365
+[2025-01-20 22:15:09] All certificates generated successfully
+[2025-01-20 22:24:08] Starting certificate generation process
+[2025-01-20 22:24:08] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:24:10] Skipping CA certificate generation due to user choice or existing files.
+[2025-01-20 22:24:12] Skipping Server certificate generation due to user choice or existing files.
+[2025-01-20 22:24:13] Skipping Client certificate generation due to user choice or existing files.
+[2025-01-20 22:24:13] All certificates generated successfully
+[2025-01-20 22:24:47] Starting certificate generation process
+[2025-01-20 22:24:47] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:30:06] Starting certificate generation process
+[2025-01-20 22:30:06] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:31:08] Starting certificate generation process
+[2025-01-20 22:31:08] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:31:08] Overwriting existing file: ca/ca.key
+[2025-01-20 22:31:08] Overwriting existing file: ca/ca.csr
+[2025-01-20 22:31:08] Overwriting existing file: ca/ca.crt
+[2025-01-20 22:31:08] Generating CA certificate
+[2025-01-20 22:31:09] Successfully executed: openssl genrsa -out ca/ca.key 4096
+[2025-01-20 22:31:09] Successfully executed: openssl req -new -key ca/ca.key -out ca/ca.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:31:09] Successfully executed: openssl req -x509 -new -key ca/ca.key -out ca/ca.crt -days 365 -nodes -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:31:09] Overwriting existing file: ca/server.key
+[2025-01-20 22:31:09] Overwriting existing file: ca/server.csr
+[2025-01-20 22:31:09] Overwriting existing file: certs/server.crt
+[2025-01-20 22:31:09] Generating Server certificate
+[2025-01-20 22:31:10] Successfully executed: openssl genrsa -out ca/server.key 4096
+[2025-01-20 22:31:10] Successfully executed: openssl req -new -key ca/server.key -out ca/server.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=localhost"
+[2025-01-20 22:31:10] Successfully executed: openssl x509 -req -in ca/server.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/server.crt -days 365
+[2025-01-20 22:31:10] Overwriting existing file: ca/client.key
+[2025-01-20 22:31:10] Overwriting existing file: ca/client.csr
+[2025-01-20 22:31:10] Overwriting existing file: certs/client.crt
+[2025-01-20 22:31:10] Generating Client certificate
+[2025-01-20 22:31:12] Successfully executed: openssl genrsa -out ca/client.key 4096
+[2025-01-20 22:31:12] Successfully executed: openssl req -new -key ca/client.key -out ca/client.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Client"
+[2025-01-20 22:31:12] Successfully executed: openssl x509 -req -in ca/client.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/client.crt -days 365
+[2025-01-20 22:31:12] All certificates generated successfully
+[2025-01-20 22:38:21] Starting certificate generation process
+[2025-01-20 22:38:21] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:38:21] Overwriting existing file: ca/ca.key
+[2025-01-20 22:38:21] Overwriting existing file: ca/ca.csr
+[2025-01-20 22:38:21] Overwriting existing file: ca/ca.crt
+[2025-01-20 22:38:21] Generating CA certificate
+[2025-01-20 22:38:22] Successfully executed: openssl genrsa -out ca/ca.key 4096
+[2025-01-20 22:38:22] Successfully executed: openssl req -new -key ca/ca.key -out ca/ca.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:38:22] Successfully executed: openssl req -x509 -new -key ca/ca.key -out ca/ca.crt -days 365 -nodes -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:38:22] Overwriting existing file: ca/server.key
+[2025-01-20 22:38:22] Overwriting existing file: ca/server.csr
+[2025-01-20 22:38:22] Overwriting existing file: certs/server.crt
+[2025-01-20 22:38:22] Generating Server certificate
+[2025-01-20 22:38:24] Successfully executed: openssl genrsa -out ca/server.key 4096
+[2025-01-20 22:38:24] Successfully executed: openssl req -new -key ca/server.key -out ca/server.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=localhost"
+[2025-01-20 22:38:24] Successfully executed: openssl x509 -req -in ca/server.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/server.crt -days 365
+[2025-01-20 22:38:24] Overwriting existing file: ca/client.key
+[2025-01-20 22:38:24] Overwriting existing file: ca/client.csr
+[2025-01-20 22:38:24] Overwriting existing file: certs/client.crt
+[2025-01-20 22:38:24] Generating Client certificate
+[2025-01-20 22:38:25] Successfully executed: openssl genrsa -out ca/client.key 4096
+[2025-01-20 22:38:25] Successfully executed: openssl req -new -key ca/client.key -out ca/client.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Client"
+[2025-01-20 22:38:25] Successfully executed: openssl x509 -req -in ca/client.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/client.crt -days 365
+[2025-01-20 22:38:25] All certificates generated successfully
+[2025-01-20 22:38:37] Starting certificate generation process
+[2025-01-20 22:38:37] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:38:37] Overwriting existing file: ca/ca.key
+[2025-01-20 22:38:37] Overwriting existing file: ca/ca.csr
+[2025-01-20 22:38:37] Overwriting existing file: ca/ca.crt
+[2025-01-20 22:38:37] Generating CA certificate
+[2025-01-20 22:38:38] Successfully executed: openssl genrsa -out ca/ca.key 4096
+[2025-01-20 22:38:38] Successfully executed: openssl req -new -key ca/ca.key -out ca/ca.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:38:38] Successfully executed: openssl req -x509 -new -key ca/ca.key -out ca/ca.crt -days 365 -nodes -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:38:38] Overwriting existing file: ca/server.key
+[2025-01-20 22:38:38] Overwriting existing file: ca/server.csr
+[2025-01-20 22:38:38] Overwriting existing file: certs/server.crt
+[2025-01-20 22:38:38] Generating Server certificate
+[2025-01-20 22:38:40] Successfully executed: openssl genrsa -out ca/server.key 4096
+[2025-01-20 22:38:40] Successfully executed: openssl req -new -key ca/server.key -out ca/server.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=localhost"
+[2025-01-20 22:38:40] Successfully executed: openssl x509 -req -in ca/server.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/server.crt -days 365
+[2025-01-20 22:38:40] Overwriting existing file: ca/client.key
+[2025-01-20 22:38:40] Overwriting existing file: ca/client.csr
+[2025-01-20 22:38:40] Overwriting existing file: certs/client.crt
+[2025-01-20 22:38:40] Generating Client certificate
+[2025-01-20 22:38:41] Successfully executed: openssl genrsa -out ca/client.key 4096
+[2025-01-20 22:38:41] Successfully executed: openssl req -new -key ca/client.key -out ca/client.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Client"
+[2025-01-20 22:38:41] Successfully executed: openssl x509 -req -in ca/client.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/client.crt -days 365
+[2025-01-20 22:38:41] All certificates generated successfully
+[2025-01-20 22:47:22] Starting certificate generation process
+[2025-01-20 22:47:22] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:47:23] Skipping CA certificate generation due to user choice or existing files.
+[2025-01-20 22:47:24] Skipping Server certificate generation due to user choice or existing files.
+[2025-01-20 22:47:25] Skipping Client certificate generation due to user choice or existing files.
+[2025-01-20 22:47:25] All certificates generated successfully
+[2025-01-20 22:49:28] Starting certificate generation process
+[2025-01-20 22:49:28] Successfully executed: mkdir -p ca certs logs
+[2025-01-20 22:49:28] Overwriting existing file: ca/ca.key
+[2025-01-20 22:49:28] Overwriting existing file: ca/ca.csr
+[2025-01-20 22:49:28] Overwriting existing file: ca/ca.crt
+[2025-01-20 22:49:28] Generating CA certificate
+[2025-01-20 22:49:28] Successfully executed: openssl genrsa -out ca/ca.key 4096
+[2025-01-20 22:49:28] Successfully executed: openssl req -new -key ca/ca.key -out ca/ca.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:49:28] Successfully executed: openssl req -x509 -new -key ca/ca.key -out ca/ca.crt -days 365 -nodes -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Test CA"
+[2025-01-20 22:49:28] Overwriting existing file: ca/server.key
+[2025-01-20 22:49:28] Overwriting existing file: ca/server.csr
+[2025-01-20 22:49:28] Overwriting existing file: certs/server.crt
+[2025-01-20 22:49:28] Generating Server certificate
+[2025-01-20 22:49:29] Successfully executed: openssl genrsa -out ca/server.key 4096
+[2025-01-20 22:49:29] Successfully executed: openssl req -new -key ca/server.key -out ca/server.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=localhost"
+[2025-01-20 22:49:29] Successfully executed: openssl x509 -req -in ca/server.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/server.crt -days 365
+[2025-01-20 22:49:29] Overwriting existing file: ca/client.key
+[2025-01-20 22:49:29] Overwriting existing file: ca/client.csr
+[2025-01-20 22:49:29] Overwriting existing file: certs/client.crt
+[2025-01-20 22:49:29] Generating Client certificate
+[2025-01-20 22:49:30] Successfully executed: openssl genrsa -out ca/client.key 4096
+[2025-01-20 22:49:30] Successfully executed: openssl req -new -key ca/client.key -out ca/client.csr -subj "/C=US/ST=State/L=Locality/O=Organization/CN=Client"
+[2025-01-20 22:49:30] Successfully executed: openssl x509 -req -in ca/client.csr -CA ca/ca.crt -CAkey ca/ca.key -CAcreateserial -out certs/client.crt -days 365
+[2025-01-20 22:49:30] All certificates generated successfully
