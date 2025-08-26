@@ -1,4 +1,5 @@
 // Standard libraries for I/O, process management, and file operations.
+#include "myshell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -96,6 +97,7 @@ void execute_command(char **args, char *input_file, char *output_file, int appen
     }
 }
 
+#ifndef TEST_MODE
 int main() {
     char input[MAX_INPUT];
     char *args[MAX_ARGS];
@@ -103,31 +105,26 @@ int main() {
     int append;
 
     while (1) {
-        // Display prompt
         printf("myshell$ ");
         fflush(stdout);
 
-        // Read input
         if (!fgets(input, MAX_INPUT, stdin)) {
-            break;  // Exit on EOF (Ctrl+D)
+            break;
         }
 
-        // Parse input
         int argc = parse_input(input, args, &input_file, &output_file, &append);
-
-        // Skip empty input
         if (argc == 0 || args[0] == NULL) {
             continue;
         }
 
-        // Check for built-in commands
         if (execute_builtin(args, argc)) {
             continue;
         }
 
-        // Execute external command
         execute_command(args, input_file, output_file, append);
     }
 
     return 0;
 }
+#endif
+
