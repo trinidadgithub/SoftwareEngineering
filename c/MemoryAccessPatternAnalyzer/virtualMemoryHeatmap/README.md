@@ -1,29 +1,62 @@
-Virtual Memory Heatmap:  Create a tool that reads /proc/meminfo and /proc/[pid]/smaps to generate a heatmap of memory usage acroos virtual memory regions.
+# Virtual Memory Heatmap
 
-Plan
+Create a tool that reads `/proc/[pid]/smaps` and represents virtual memory regions as an ASCII heatmap or as CSV data for Python/Jupyter visualization.
 
-1. Read Data Sources:
-- Use /proc/meminfo for overall memory statistics.
-- Use /proc/[pid]/smaps to gather details about memory regions of a process.
+## Build
 
-2. Parse Data:
-- Parse /proc/meminfo to understand system-wide memory stats.
-- Parse /proc/[pid]/smaps to break down memory usage into categories like heap, stack, shared libraries, and code.
+```bash
+gcc -Wall -Wextra -pedantic -std=c11 -o vmh vmh.c
+```
 
-3. Generate Heatmap:
-- Represent the memory usage using ASCII art or by generating a file for tools like Matplotlib or GNUplot.
-- Assign a color intensity (or character) based on usage levels.
+## Usage
 
-4. Enhance Visualization:
-- Use terminal graphics libraries like ncurses for a real-time interactive view.
-- Optionally, output the data in a format compatible with external visualization tools.
+```bash
+./vmh <pid> [--metric size|rss|pss|private-dirty|shared-clean] [--limit n] [--csv file] [--no-heatmap]
+```
 
-5. User Interface:
-- Allow the user to specify a process ID (pid) to monitor.
-- Provide a summary of memory usage along with the heatmap.
+Examples:
 
-First Steps
+```bash
+./vmh 1234 --metric rss --limit 20
+./vmh 1234 --metric pss --csv process-memory.csv
+./vmh 1234 --csv process-memory.csv --no-heatmap
+```
 
-1. Write a program to read and parse /proc/meminfo and /proc/[pid]/smaps.
-2. Represent memory regions and their sizes in a heatmap using ASCII art.
-3. Implement user input for selecting a pid
+Metrics:
+
+- `size`: virtual address space reserved by the mapping.
+- `rss`: resident physical memory currently backed by RAM.
+- `pss`: proportional set size; shared pages are divided across processes.
+- `private-dirty`: private modified pages, useful for finding process-owned memory growth.
+- `shared-clean`: clean pages shared with other processes, often shared libraries.
+
+## CSV Columns
+
+```text
+start,end,permissions,type,pathname,size_kb,rss_kb,pss_kb,private_dirty_kb,shared_clean_kb
+```
+
+## Jupyter Example
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("process-memory.csv")
+top = df.sort_values("rss_kb", ascending=False).head(25)
+
+plt.figure(figsize=(12, 8))
+plt.barh(top["pathname"], top["rss_kb"])
+plt.xlabel("RSS (kB)")
+plt.ylabel("Memory region")
+plt.title("Top Virtual Memory Regions by RSS")
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.show()
+```
+
+## Next Improvements
+
+1. Add `--sort address|size|rss|pss`.
+2. Add colorized terminal output by region type.
+3. Add sampling mode to write repeated snapshots for time-series plots.
